@@ -1,12 +1,22 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { ShopsComponent } from './features/shops/shops.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,   // nécessaire pour <router-outlet>
+    ShopsComponent, // nécessaire pour <app-shops>
+  ],
 })
-export class App {
-  protected readonly title = signal('-project');
+export class AppComponent {
+  title() {
+    return 'Angular';
+  }
 }
