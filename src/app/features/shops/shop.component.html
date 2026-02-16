@@ -1,0 +1,212 @@
+<!-- Page d'affichage des boutiques -->
+<div class="shops-page">
+
+  <!-- Haut de page avec titre -->
+  <div class="header-section">
+    <div class="container">
+
+      <!-- Badge "Nouveau" -->
+      <div class="badge-container fade-in-up delay-100">
+        <div class="modern-badge">
+          <span class="pulse-dot"></span>
+          <span class="badge-text">🛍️ Découvrez nos boutiques</span>
+        </div>
+      </div>
+
+      <!-- Titre -->
+      <h1 class="page-title fade-in-up delay-200">
+        Explorez nos
+        <span class="gradient-text">boutiques premium</span>
+      </h1>
+
+      <!-- Sous-titre -->
+      <p class="page-subtitle fade-in-up delay-300">
+        Plus de <span class="highlight">{{ shops.length }} boutiques</span> vous attendent
+      </p>
+
+      <!-- Barre de recherche -->
+      <div class="search-container fade-in-up delay-400">
+        <div class="search-box">
+          <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Rechercher une boutique..."
+            [(ngModel)]="recherche"
+            (input)="quandOnCherche($event)"
+          />
+          <button
+            *ngIf="recherche"
+            class="clear-btn"
+            (click)="recherche = ''; appliquerLesFiltres()"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Section des filtres -->
+  <div class="filters-section">
+    <div class="container">
+
+      <div class="filters-header">
+        <h3 class="filters-title">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+          </svg>
+          Filtrer par catégorie
+        </h3>
+
+        <!-- Bouton pour tout réinitialiser -->
+        <button
+          *ngIf="categorieChoisie !== 'tout' || recherche !== ''"
+          class="reset-btn"
+          (click)="toutReinitialiser()"
+        >
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Réinitialiser
+        </button>
+      </div>
+
+      <!-- Les boutons de catégories -->
+      <div class="category-pills">
+
+        <!-- Bouton "Toutes" -->
+        <button
+          class="category-pill"
+          [class.active]="categorieChoisie === 'tout'"
+          (click)="filtrerParCategorie('tout')"
+        >
+          <span class="pill-icon">🏬</span>
+          <span class="pill-text">Toutes</span>
+          <span class="pill-count">{{ shops.length }}</span>
+        </button>
+
+        <!-- Un bouton pour chaque catégorie -->
+        <button
+          *ngFor="let cat of categories"
+          class="category-pill"
+          [class.active]="categorieChoisie === cat"
+          (click)="filtrerParCategorie(cat)"
+        >
+          <span class="pill-icon">{{ avoirIconeCategorie(cat) }}</span>
+          <span class="pill-text">{{ cat }}</span>
+          <span class="pill-count">{{ combienDansCetteCategorie(cat) }}</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Section des résultats -->
+  <div class="results-section">
+    <div class="container">
+
+      <!-- Combien on a trouvé -->
+      <div class="results-header">
+        <p class="results-count">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+          </svg>
+          <span class="count-number">{{ boutiquesAffichees.length }}</span>
+          boutique{{ boutiquesAffichees.length > 1 ? 's' : '' }} trouvée{{ boutiquesAffichees.length > 1 ? 's' : '' }}
+        </p>
+      </div>
+
+      <!-- La liste des boutiques -->
+      <div class="shops-grid" *ngIf="boutiquesAffichees.length > 0">
+
+        <div class="shop-card" *ngFor="let boutique of boutiquesAffichees; let i = index"
+             [style.animation-delay]="(i * 0.1) + 's'">
+
+          <!-- Image de couverture -->
+          <div class="shop-image-wrapper">
+            <img
+              [src]="boutique.coverPhoto || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800'"
+              [alt]="boutique.name"
+              class="shop-cover-image"
+              loading="lazy"
+            />
+
+            <div class="image-overlay"></div>
+
+            <!-- Badge de catégorie -->
+            <div class="category-badge">
+              <span class="badge-icon">{{ avoirIconeCategorie(boutique.category) }}</span>
+              <span class="badge-label">{{ boutique.category }}</span>
+            </div>
+
+            <!-- Logo de la boutique -->
+            <div class="shop-logo-container">
+              <img
+                [src]="boutique.logo || 'https://via.placeholder.com/80'"
+                [alt]="boutique.name + ' logo'"
+                class="shop-logo"
+              />
+            </div>
+          </div>
+
+          <!-- Infos de la boutique -->
+          <div class="shop-content">
+
+            <h3 class="shop-name">{{ boutique.name }}</h3>
+
+            <div class="shop-location">
+              <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              <span>{{ boutique.location }}</span>
+            </div>
+
+            <p class="shop-description">{{ boutique.description }}</p>
+
+            <div class="separator"></div>
+
+            <!-- Bouton pour voir les détails -->
+            <div class="shop-footer">
+              <button class="shop-btn">
+                <span>Voir les détails</span>
+                <svg class="btn-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Si on trouve rien -->
+      <div class="no-results" *ngIf="boutiquesAffichees.length === 0">
+        <div class="no-results-content">
+          <div class="no-results-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="no-results-title">Aucune boutique trouvée</h3>
+          <p class="no-results-text">
+            Essayez de chercher autre chose ou changez de catégorie
+          </p>
+          <button class="reset-btn-large" (click)="toutReinitialiser()">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Réinitialiser les filtres
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

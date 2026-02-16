@@ -1,42 +1,40 @@
-// Imports principaux d’Angular
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-// Model Shop (interface + enum)
 import { Shop, ShopCategory } from '../models/shop.model';
 
 @Component({
   selector: 'app-shops',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  template: '<p>Composant Shops en cours..</p>',
+  templateUrl: './shop.component.html',
+  styleUrls: ['./shop.component.css']
 })
 export class ShopsComponent implements OnInit {
 
-  // Liste de toutes les boutiques
+  // Toutes nos boutiques
   shops: Shop[] = [];
 
-  // Liste utilisée pour l’affichage après filtres
-  filteredShops: Shop[] = [];
+  // Les boutiques qu'on affiche après avoir filtré
+  boutiquesAffichees: Shop[] = [];
 
-  // Récupère toutes les catégories depuis l’enum
+  // La liste de toutes les catégories possibles
   categories = Object.values(ShopCategory);
 
-  // Catégorie selectionnée (par défaut : toutes)
-  selectedCategory: string = 'all';
+  // Quelle catégorie l'utilisateur a choisi
+  categorieChoisie: string = 'tout';
 
-  // Texte tapé dans la barre de recherche
-  searchTerm: string = '';
+  // Ce que l'utilisateur tape dans la barre de recherche
+  recherche: string = '';
 
   ngOnInit(): void {
-    // Chargement des données au démarrage du composant
-    this.loadShops();
+    // Au démarrage, on charge les boutiques
+    this.chargerLesBoutiques();
   }
 
-  // Données temporaires (plus tard viendront de l’API)
-  loadShops(): void {
+  // Charger toutes les boutiques (pour l'instant c'est du fake, plus tard ça viendra de l'API)
+  chargerLesBoutiques(): void {
     this.shops = [
       {
         _id: '1',
@@ -82,46 +80,108 @@ export class ShopsComponent implements OnInit {
         category: 'Sports & Loisirs',
         logo: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=200',
         coverPhoto: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800'
+      },
+      {
+        _id: '6',
+        name: 'Kids Paradise',
+        description: 'Jouets, vêtements et accessoires pour enfants.',
+        location: 'Niveau 2, Section D',
+        category: 'Autre',
+        logo: 'https://images.unsplash.com/photo-1515488764276-beab7607c1e6?w=200',
+        coverPhoto: 'https://images.unsplash.com/photo-1514516345957-556ca7d90a29?w=800'
+      },
+      {
+        _id: '7',
+        name: 'Luxury Watches',
+        description: 'Montres de luxe et bijouterie haut de gamme.',
+        location: 'Niveau 1, Section C',
+        category: 'Mode & Vêtements',
+        logo: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200',
+        coverPhoto: 'https://images.unsplash.com/photo-1560343090-f0409e92791a?w=800'
+      },
+      {
+        _id: '8',
+        name: 'Fresh Market',
+        description: 'Produits frais et épicerie fine de qualité.',
+        location: 'Niveau -1, Food Zone',
+        category: 'Restauration',
+        logo: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200',
+        coverPhoto: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800'
       }
     ];
 
-    // Au début on affiche tout
-    this.filteredShops = [...this.shops];
+    // Au début on affiche toutes les boutiques
+    this.boutiquesAffichees = [...this.shops];
   }
 
-  // Quand l’utilisateur change la catégorie
-  filterByCategory(category: string): void {
-    this.selectedCategory = category;
-    this.applyFilters();
+  // Quand l'utilisateur clique sur une catégorie
+  filtrerParCategorie(categorie: string): void {
+    this.categorieChoisie = categorie;
+    this.appliquerLesFiltres();
   }
 
-  // Quand l’utilisateur tape dans la recherche
-  onSearchChange(event: any): void {
-    this.searchTerm = event.target.value;
-    this.applyFilters();
+  // Quand l'utilisateur tape quelque chose dans la barre de recherche
+  quandOnCherche(event: any): void {
+    this.recherche = event.target.value;
+    this.appliquerLesFiltres();
   }
 
-  // Applique les filtres actuels
-  applyFilters(): void {
-    this.filteredShops = this.shops.filter(shop => {
+  // Appliquer tous les filtres actifs (catégorie + recherche)
+  appliquerLesFiltres(): void {
+    this.boutiquesAffichees = this.shops.filter(boutique => {
 
-      const matchCategory =
-        this.selectedCategory === 'all' ||
-        shop.category === this.selectedCategory;
+      // Est-ce que la boutique correspond à la catégorie choisie ?
+      let bonneCategorie =
+        this.categorieChoisie === 'tout' ||
+        boutique.category === this.categorieChoisie;
 
-      const matchSearch =
-        this.searchTerm === '' ||
-        shop.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        shop.description.toLowerCase().includes(this.searchTerm.toLowerCase());
+      // Est-ce que le nom ou la description contient ce qu'on cherche ?
+      let correspondRecherche =
+        this.recherche === '' ||
+        boutique.name.toLowerCase().includes(this.recherche.toLowerCase()) ||
+        boutique.description.toLowerCase().includes(this.recherche.toLowerCase());
 
-      return matchCategory && matchSearch;
+      // On garde la boutique seulement si les deux conditions sont bonnes
+      return bonneCategorie && correspondRecherche;
     });
   }
 
-  // Remise à zéro des filtres
-  resetFilters(): void {
-    this.selectedCategory = 'all';
-    this.searchTerm = '';
-    this.filteredShops = [...this.shops];
+  // Remettre tous les filtres à zéro
+  toutReinitialiser(): void {
+    this.categorieChoisie = 'tout';
+    this.recherche = '';
+    this.boutiquesAffichees = [...this.shops];
+  }
+
+  // Retourner l'emoji qui correspond à une catégorie
+  avoirIconeCategorie(categorie: string): string {
+    // On fait un petit dictionnaire des icônes
+    let icones: any = {
+      'Mode & Vêtements': '👔',
+      'Électronique': '📱',
+      'Restauration': '🍽️',
+      'Beauté & Cosmétiques': '💄',
+      'Sports & Loisirs': '⚽',
+      'Autre': '🏪'
+    };
+
+    // Si la catégorie existe dans notre dictionnaire, on retourne l'icône
+    // Sinon on retourne une icône par défaut
+    return icones[categorie] || '🏪';
+  }
+
+  // Compter combien de boutiques il y a dans une catégorie
+  combienDansCetteCategorie(categorie: string): number {
+    let compteur = 0;
+
+    // On parcourt toutes les boutiques
+    for (let boutique of this.shops) {
+      // Si la boutique est dans cette catégorie, on ajoute 1 au compteur
+      if (boutique.category === categorie) {
+        compteur++;
+      }
+    }
+
+    return compteur;
   }
 }
