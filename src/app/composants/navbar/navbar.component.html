@@ -1,14 +1,14 @@
-
+<!-- Navbar complète avec boutons -->
 <nav class="navbar">
   <div class="nav-container">
 
-
+    <!-- Logo -->
     <a routerLink="/" class="logo">
       <span class="logo-icon">🏬</span>
       <span class="logo-text">MegaMall</span>
     </a>
 
-
+    <!-- Menu principal -->
     <ul class="nav-menu">
       <li>
         <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
@@ -31,6 +31,12 @@
         </a>
       </li>
     </ul>
+
+    <!-- Boutons d'action -->
+    <div class="nav-actions">
+      <button class="btn-connexion">Connexion</button>
+      <button class="btn-inscription">Inscription</button>
+    </div>
 
   </div>
 </nav>
