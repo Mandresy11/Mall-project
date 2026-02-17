@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-/* Logo */
+
 .logo {
   display: flex;
   align-items: center;
@@ -74,7 +74,6 @@
   color: #667eea;
 }
 
-/* barre lien actif */
 .nav-link::after {
   content: '';
   position: absolute;
@@ -131,4 +130,101 @@
 .btn-inscription:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Menu burger (mobile) */
+.menu-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.menu-burger span {
+  width: 25px;
+  height: 3px;
+  background: #333;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* Animation burger ouvert*/
+.menu-burger.ouvert span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+
+.menu-burger.ouvert span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-burger.ouvert span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Menu mobile */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: white;
+  padding: 0;
+  border-top: 1px solid #e0e0e0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.mobile-menu.ouvert {
+  max-height: 500px;
+  padding: 1rem 2rem;
+}
+
+.mobile-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: color 0.3s ease;
+}
+
+.mobile-link:hover {
+  color: #667eea;
+}
+
+.mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.mobile-actions button {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .nav-menu {
+    display: none;
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+
+  .menu-burger {
+    display: flex;
+  }
+
+  .mobile-menu {
+    display: flex;
+  }
+
+  .nav-container {
+    padding: 1rem 1.5rem;
+  }
 }
