@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ShopsComponent } from './features/shops/shops.component';
+import { NavbarComponent } from './composants/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,12 @@ import { ShopsComponent } from './features/shops/shops.component';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule,   // nécessaire pour <router-outlet>
-    ShopsComponent, // nécessaire pour <app-shops>
+    RouterModule,
+    NavbarComponent
   ],
 })
 export class AppComponent {
   title() {
-    return 'Angular';
+    return 'MegaMall';
   }
 }
