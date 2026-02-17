@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
+import { HomeComponent } from './features/home/home.component';
 import { ShopsComponent } from './features/shops/shops.component';
 
 export const routes: Routes = [
-  // Page par défaut : Boutiques
+  // Page d'accueil
   {
     path: '',
-    component: ShopsComponent
+    component: HomeComponent
   },
 
   // Page des boutiques
