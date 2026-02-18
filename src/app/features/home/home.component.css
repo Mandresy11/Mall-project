@@ -11,7 +11,7 @@
   padding: 0 2rem;
 }
 
-/* hero */
+
 .hero-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
   background-size: 400% 400%;
@@ -25,14 +25,12 @@
   padding: 4rem 2rem;
 }
 
-/* Animation du gradient */
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Particules flottantes */
 .particle {
   position: absolute;
   border-radius: 50%;
@@ -85,7 +83,6 @@
   z-index: 10;
 }
 
-/* Badge */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -114,7 +111,6 @@
   50% { opacity: 0.5; transform: scale(1.2); }
 }
 
-/* Titre principal */
 .hero-title {
   font-size: clamp(2.5rem, 6vw, 5rem);
   font-weight: 800;
@@ -131,7 +127,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* Sous-titre */
 .hero-subtitle {
   font-size: 1.25rem;
   color: rgba(255, 255, 255, 0.95);
@@ -149,7 +144,6 @@
   font-weight: 700;
 }
 
-/* Boutons d'action */
 .hero-buttons {
   display: flex;
   gap: 1rem;
@@ -198,7 +192,6 @@
   border-color: white;
 }
 
-/* Forme SVG en bas */
 .wave-bottom {
   position: absolute;
   bottom: -1px;
@@ -213,7 +206,7 @@
   display: block;
 }
 
-/* stat */
+
 .stats-section {
   padding: 4rem 0;
   background: white;
@@ -279,6 +272,67 @@
 }
 
 
+.services-section {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+
+.services-gird {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+}
+
+.service-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.service-card h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.service-card p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+}
+
 @media (max-width: 768px) {
   .hero-section {
     min-height: 80vh;
@@ -303,6 +357,14 @@
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+  }
+
+  .services-gird {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 2rem;
   }
 
   .container {
