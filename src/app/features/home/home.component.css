@@ -11,7 +11,7 @@
   padding: 0 2rem;
 }
 
-
+/* SECTION HERO*/
 .hero-section {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
   background-size: 400% 400%;
@@ -299,6 +299,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+  width: 100%;
+}
+
+
+.services-grid {
+  margin: 0 auto;
 }
 
 .service-card {
