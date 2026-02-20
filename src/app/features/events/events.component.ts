@@ -13,22 +13,23 @@ import { Event, EventCategory } from '../models/event.model';
 })
 export class EventsComponent implements OnInit {
 
-
+  // Liste de tous les événements
   evenements: Event[] = [];
 
-
+  // Liste filtrée pour l'affichage
   evenementsAffiches: Event[] = [];
 
-
+  // Toutes les catégories
   categories = Object.values(EventCategory);
 
-
+  // Catégorie sélectionnée
   categorieChoisie: string = 'tous';
 
-
+  // Texte de recherche
   recherche: string = '';
 
   ngOnInit(): void {
+    // Charger les événements au démarrage
     this.chargerLesEvenements();
   }
 
@@ -130,6 +131,7 @@ export class EventsComponent implements OnInit {
       }
     ];
 
+    // Au début on affiche tout
     this.evenementsAffiches = [...this.evenements];
   }
 
@@ -139,7 +141,7 @@ export class EventsComponent implements OnInit {
     this.appliquerLesFiltres();
   }
 
-  // Recherche utilisateur
+  // Quand l'utilisateur tape dans la recherche
   quandOnCherche(event: any): void {
     this.recherche = event.target.value;
     this.appliquerLesFiltres();
@@ -162,7 +164,7 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  // Réinitialiser
+  // Réinitialiser les filtres
   toutReinitialiser(): void {
     this.categorieChoisie = 'tous';
     this.recherche = '';
@@ -183,5 +185,15 @@ export class EventsComponent implements OnInit {
       year: 'numeric'
     };
     return date.toLocaleDateString('fr-FR', options);
+  }
+
+  getMoisAbbr(dateStr: string): string {
+    const mois = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const index = parseInt(dateStr.split('-')[1], 10) - 1;
+    return mois[index] ?? '';
+  }
+
+  getJour(dateStr: string): string {
+    return dateStr.split('-')[2];
   }
 }

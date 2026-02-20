@@ -1,4 +1,195 @@
 <div class="events-page">
-  <h1>Événements</h1>
-  <p>pppppp</p>
+
+  <div class="page-header">
+    <div class="container">
+      <div class="header-body">
+
+        <div class="header-left">
+          <div class="badge-container fade-in-up delay-100">
+            <div class="modern-badge">
+              <span class="pulse-dot"></span>
+              <span class="badge-text">📅 Événements à venir</span>
+            </div>
+          </div>
+
+          <h1 class="page-title fade-in-up delay-200">
+            Nos <span class="gradient-text">Événements</span>
+          </h1>
+
+          <p class="page-subtitle fade-in-up delay-300">
+            Ne manquez aucun événement au <span class="highlight">MegaMall</span>
+          </p>
+        </div>
+
+        <!--barre de recherche -->
+        <div class="header-right fade-in-up delay-400">
+          <div class="search-container">
+            <span class="search-label">Rechercher</span>
+            <div class="search-box">
+              <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Nom, lieu, description..."
+                [(ngModel)]="recherche"
+                (input)="quandOnCherche($event)"
+              />
+              <button *ngIf="recherche" class="clear-btn" (click)="recherche = ''; appliquerLesFiltres()">✕</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-section">
+    <div class="container">
+      <div class="filters-inner">
+
+        <span class="filters-label">
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+          </svg>
+          Catégories
+        </span>
+
+        <div class="category-pills">
+          <button
+            class="category-pill"
+            [class.active]="categorieChoisie === 'tous'"
+            (click)="filtrerParCategorie('tous')"
+          >
+            Tous <span class="pill-count">{{ evenements.length }}</span>
+          </button>
+          <button
+            *ngFor="let cat of categories"
+            class="category-pill"
+            [class.active]="categorieChoisie === cat"
+            (click)="filtrerParCategorie(cat)"
+          >
+            {{ cat }} <span class="pill-count">{{ combienDansCetteCategorie(cat) }}</span>
+          </button>
+        </div>
+
+        <button
+          *ngIf="categorieChoisie !== 'tous' || recherche !== ''"
+          class="reset-btn"
+          (click)="toutReinitialiser()"
+        >
+          <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Réinitialiser
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div class="results-section">
+    <div class="container">
+
+      <p class="results-count">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        <span class="count-number">{{ evenementsAffiches.length }}</span>
+        événement{{ evenementsAffiches.length > 1 ? 's' : '' }} trouvé{{ evenementsAffiches.length > 1 ? 's' : '' }}
+      </p>
+
+      <!-- Grille -->
+      <div class="events-grid" *ngIf="evenementsAffiches.length > 0">
+
+        <div
+          class="event-card"
+          *ngFor="let event of evenementsAffiches; let i = index"
+          [style.animation-delay]="(i * 0.08) + 's'"
+        >
+          <!-- Image plein cadre -->
+          <div class="event-image-wrapper">
+            <img
+              [src]="event.image || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800'"
+              [alt]="event.title"
+              class="event-image"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="event-overlay"></div>
+
+          <div class="badges" *ngIf="event.isFree">
+            <span class="badge badge-free">Gratuit</span>
+          </div>
+
+          <div class="date-badge">
+            <div class="date-day">{{ getJour(event.date) }}</div>
+            <div class="date-month">{{ getMoisAbbr(event.date) }}</div>
+          </div>
+
+          <div class="event-content">
+
+            <div class="event-category">{{ event.category }}</div>
+            <h3 class="event-title">{{ event.title }}</h3>
+
+            <div class="event-meta">
+              <div class="info-item">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                {{ event.time }}
+              </div>
+              <div class="info-item">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                {{ event.location }}
+              </div>
+            </div>
+
+            <div class="event-footer">
+              <div>
+                <span *ngIf="event.isFree" class="price-free">Entrée gratuite</span>
+                <span *ngIf="!event.isFree" class="price-paid">{{ event.price }} Ar</span>
+              </div>
+              <button class="event-btn">
+                Voir les détails
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Aucun résultat -->
+      <div class="no-results" *ngIf="evenementsAffiches.length === 0">
+        <div class="no-results-content">
+          <div class="no-results-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="no-results-title">Aucun événement trouvé</h3>
+          <p class="no-results-text">Essayez de chercher autre chose ou changez de catégorie</p>
+          <button class="reset-btn-large" (click)="toutReinitialiser()">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Réinitialiser les filtres
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
