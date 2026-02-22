@@ -50,7 +50,7 @@ export class AuthModalComponent implements OnInit {
     this.mode = this.modeInitial;
   }
 
-  // ─── BASCULER CONNEXION / INSCRIPTION ─────────────────────────
+  // BASCULER CONNEXION / INSCRIPTION
   basculerMode(mode: 'connexion' | 'inscription'): void {
     this.mode = mode;
     this.erreur = '';
@@ -58,7 +58,7 @@ export class AuthModalComponent implements OnInit {
     this.reinitialiserFormulaires();
   }
 
-  // ─── SOUMETTRE CONNEXION ──────────────────────────────────────
+  // SOUMETTRE CONNEXION
   onConnexion(): void {
     this.erreur = '';
 
