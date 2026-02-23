@@ -4,7 +4,7 @@
 
 .detail-page { min-height: 100vh; background: #f5f7fa; }
 
-/* HERO */
+/*HERO*/
 .shop-hero { position: relative; height: 420px; overflow: hidden; }
 .hero-img  { width: 100%; height: 100%; object-fit: cover; }
 .hero-overlay {
@@ -41,14 +41,14 @@
 .hero-title { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; margin: 0.25rem 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
 .hero-location { font-size: 0.9rem; opacity: 0.9; margin: 0; }
 
-/* CORPS */
+/*CORPS*/
 .page-body {
   max-width: 1200px; margin: 0 auto;
   padding: 2.5rem 1.5rem 5rem;
   display: flex; flex-direction: column; gap: 1.5rem;
 }
 
-/* CARDS */
+/*CARDS*/
 .card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
 .card-title { font-size: 1.1rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
 .card-text  { color: #4b5563; line-height: 1.8; font-size: 0.9375rem; margin: 0; }
@@ -60,7 +60,7 @@
 .info-link:hover { color: #667eea; }
 .divider-v  { width: 1px; height: 60px; background: #e5e7eb; flex-shrink: 0; }
 
-/*  PRODUITS  */
+/*PRODUITS*/
 .products-section {
   background: white; border-radius: 20px;
   padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
@@ -84,12 +84,14 @@
 .product-img-wrapper { position: relative; height: 190px; overflow: hidden; background: #f3f4f6; }
 .product-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
 .product-card:hover .product-img { transform: scale(1.08); }
+
 .stock-badge {
   position: absolute; top: 0.75rem; right: 0.75rem;
-  padding: 0.25rem 0.75rem; background: #d1fae5; color: #065f46;
+  padding: 0.25rem 0.75rem;
   border-radius: 50px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
 }
 .stock-badge.rupture { background: #fee2e2; color: #991b1b; }
+
 .product-body   { padding: 1.25rem; }
 .product-name   { font-size: 0.9375rem; font-weight: 700; color: #1f2937; margin: 0 0 0.375rem; }
 .product-desc   { font-size: 0.8rem; color: #9ca3af; line-height: 1.5; margin: 0 0 1rem; }
@@ -113,6 +115,7 @@
 }
 .back-link:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102,126,234,0.45); }
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .shop-hero     { height: 300px; }
   .hero-logo     { width: 65px; height: 65px; }

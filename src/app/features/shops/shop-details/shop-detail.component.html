@@ -80,8 +80,9 @@
 
             <div class="product-img-wrapper">
               <img [src]="p.image" [alt]="p.name" class="product-img" loading="lazy" />
-              <span class="stock-badge" [class.rupture]="p.stock === 0">
-                {{ p.stock > 0 ? 'En stock' : 'Rupture' }}
+
+              <span class="stock-badge rupture" *ngIf="p.stock === 0">
+                Rupture
               </span>
             </div>
 
