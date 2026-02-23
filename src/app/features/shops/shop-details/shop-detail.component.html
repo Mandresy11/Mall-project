@@ -40,30 +40,64 @@
     <!-- CORPS -->
     <div class="page-body">
 
-      <!-- 🆕 Card Description -->
+      <!-- Card Description -->
       <div class="card">
-        <h2 class="card-title">
-          <span>📋</span> À propos de la boutique
-        </h2>
+        <h2 class="card-title"><span>📋</span> À propos de la boutique</h2>
         <p class="card-text">{{ shop.description }}</p>
       </div>
 
-      <!-- 🆕 Card Horaires + Contact -->
+      <!-- Card Horaires + Contact -->
       <div class="card card-row">
-
         <div class="info-block">
           <h3 class="info-label"><span>🕐</span> Horaires d'ouverture</h3>
           <p class="info-value">{{ shop.openingHours }}</p>
         </div>
-
         <div class="divider-v"></div>
-
         <div class="info-block">
           <h3 class="info-label"><span>📞</span> Téléphone</h3>
           <a [href]="getTelLink()" class="info-value info-link">{{ shop.phone }}</a>
         </div>
-
       </div>
+
+      <!-- Section Produits -->
+      <section class="products-section">
+
+        <div class="section-header">
+          <h2 class="section-title">
+            Nos produits
+            <span class="products-count">{{ products.length }}</span>
+          </h2>
+        </div>
+
+        <!-- Aucun produit -->
+        <div *ngIf="products.length === 0" class="no-products">
+          <p>🛍️ Aucun produit disponible pour le moment.</p>
+        </div>
+
+        <!-- Grille produits -->
+        <div class="products-grid" *ngIf="products.length > 0">
+          <div class="product-card" *ngFor="let p of products">
+
+            <div class="product-img-wrapper">
+              <img [src]="p.image" [alt]="p.name" class="product-img" loading="lazy" />
+              <span class="stock-badge" [class.rupture]="p.stock === 0">
+                {{ p.stock > 0 ? 'En stock' : 'Rupture' }}
+              </span>
+            </div>
+
+            <div class="product-body">
+              <h3 class="product-name">{{ p.name }}</h3>
+              <p class="product-desc">{{ p.description }}</p>
+              <div class="product-footer">
+                <span class="product-price">{{ p.price | number:'1.0-0' }} MAD</span>
+                <span class="product-stock" *ngIf="p.stock > 0">{{ p.stock }} restants</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
 
     </div>
   </div>
