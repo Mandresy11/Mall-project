@@ -1,8 +1,4 @@
-/* ============================================================
-   5A — OVERLAY · CONTAINER · DÉCORATIONS · HEADER · ONGLETS
-   ============================================================ */
-
-/* ── Overlay ── */
+/* overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -22,7 +18,7 @@
   to   { opacity: 1; }
 }
 
-/* ── Container principal ── */
+/* container */
 .modal-container {
   background: #fff;
   border-radius: 24px;
@@ -40,15 +36,15 @@
   scrollbar-color: #e2e8f0 transparent;
 }
 
-.modal-container::-webkit-scrollbar       { width: 4px; }
+.modal-container::-webkit-scrollbar { width: 4px; }
 .modal-container::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 2px; }
 
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(30px) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ── Bouton fermer ── */
+/* bouton */
 .btn-fermer {
   position: absolute;
   top: 1.25rem;
@@ -74,11 +70,13 @@
   transform: rotate(90deg);
 }
 
-/* ── Décorations de fond ── */
+/* decoration */
 .modal-decoration {
   position: absolute;
-  top: 0; right: 0;
-  width: 200px; height: 200px;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
   border-radius: 0 24px 0 0;
   pointer-events: none;
@@ -86,10 +84,10 @@
 
 .deco-circle { position: absolute; border-radius: 50%; opacity: 0.07; }
 .deco-1 { width: 150px; height: 150px; background: #667eea; top: -40px; right: -40px; }
-.deco-2 { width:  80px; height:  80px; background: #764ba2; top:  40px; right:  20px; }
-.deco-3 { width:  40px; height:  40px; background: #667eea; top:  10px; right:  80px; }
+.deco-2 { width: 80px; height: 80px; background: #764ba2; top: 40px; right: 20px; }
+.deco-3 { width: 40px; height: 40px; background: #667eea; top: 10px; right: 80px; }
 
-/* ── En-tête du modal ── */
+/* header */
 .modal-header {
   text-align: center;
   margin-bottom: 1.75rem;
@@ -117,7 +115,7 @@
   margin: 0;
 }
 
-/* ── Onglets ── */
+/* onglets */
 .onglets {
   display: flex;
   background: #f3f4f6;
@@ -154,4 +152,199 @@
 .onglet:hover:not(.actif) {
   color: #374151;
   background: rgba(255, 255, 255, 0.5);
+}
+
+/* formulaire */
+.formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.champs-ligne {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.champ-groupe {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* label */
+.champ-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* input wrapper */
+.champ-input-wrapper { position: relative; }
+
+/* input */
+.champ-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #1f2937;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.champ-input::placeholder { color: #9ca3af; }
+
+.champ-input:focus {
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.champ-input.avec-icone { padding-right: 2.75rem; }
+
+.champ-input.valide {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.champ-input.invalide {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+/* btn mdp */
+.btn-voir-mdp {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.btn-voir-mdp:hover { color: #667eea; }
+
+/* genre */
+.genre-choix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.genre-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6b7280;
+  transition: all 0.2s ease;
+}
+
+.genre-option:hover {
+  border-color: #667eea;
+  color: #667eea;
+  background: #f0f1ff;
+}
+
+.genre-option.selectionne {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #f0f1ff, #f5f0ff);
+  color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.genre-icone { font-size: 1.1rem; }
+
+/* force mdp */
+.force-mdp {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.force-barre {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.force-barre.faible { background: #ef4444; }
+.force-barre.fort { background: #10b981; }
+
+.force-texte {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.force-texte.faible { color: #ef4444; }
+.force-texte.fort { color: #10b981; }
+
+/* lien */
+.lien-mdp-oublie {
+  text-align: right;
+  margin-top: -0.25rem;
+}
+
+.lien-mdp-oublie a {
+  font-size: 0.8rem;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.lien-mdp-oublie a:hover { text-decoration: underline; }
+
+/* messages */
+.message-erreur,
+.message-succes {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  animation: slideMsg 0.2s ease;
+}
+
+@keyframes slideMsg {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.message-erreur {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.message-succes {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
 }
