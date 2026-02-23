@@ -5,7 +5,7 @@
   <div class="header-section">
     <div class="container">
 
-      <!-- Badge "Nouveau" -->
+      <!-- Badge -->
       <div class="badge-container fade-in-up delay-100">
         <div class="modern-badge">
           <span class="pulse-dot"></span>
@@ -62,7 +62,6 @@
           Filtrer par catégorie
         </h3>
 
-        <!-- Bouton pour tout réinitialiser -->
         <button
           *ngIf="categorieChoisie !== 'tout' || recherche !== ''"
           class="reset-btn"
@@ -75,10 +74,9 @@
         </button>
       </div>
 
-      <!-- Les boutons de catégories -->
+      <!-- Pills catégories -->
       <div class="category-pills">
 
-        <!-- Bouton "Toutes" -->
         <button
           class="category-pill"
           [class.active]="categorieChoisie === 'tout'"
@@ -89,7 +87,6 @@
           <span class="pill-count">{{ shops.length }}</span>
         </button>
 
-        <!-- Un bouton pour chaque catégorie -->
         <button
           *ngFor="let cat of categories"
           class="category-pill"
@@ -109,7 +106,6 @@
   <div class="results-section">
     <div class="container">
 
-      <!-- Combien on a trouvé -->
       <div class="results-header">
         <p class="results-count">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,13 +116,12 @@
         </p>
       </div>
 
-      <!-- La liste des boutiques -->
+      <!-- Grille boutiques -->
       <div class="shops-grid" *ngIf="boutiquesAffichees.length > 0">
 
         <div class="shop-card" *ngFor="let boutique of boutiquesAffichees; let i = index"
              [style.animation-delay]="(i * 0.1) + 's'">
 
-          <!-- Image de couverture -->
           <div class="shop-image-wrapper">
             <img
               [src]="boutique.coverPhoto || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800'"
@@ -134,16 +129,13 @@
               class="shop-cover-image"
               loading="lazy"
             />
-
             <div class="image-overlay"></div>
 
-            <!-- Badge de catégorie -->
             <div class="category-badge">
               <span class="badge-icon">{{ avoirIconeCategorie(boutique.category) }}</span>
               <span class="badge-label">{{ boutique.category }}</span>
             </div>
 
-            <!-- Logo de la boutique -->
             <div class="shop-logo-container">
               <img
                 [src]="boutique.logo || 'https://via.placeholder.com/80'"
@@ -153,7 +145,6 @@
             </div>
           </div>
 
-          <!-- Infos de la boutique -->
           <div class="shop-content">
 
             <h3 class="shop-name">{{ boutique.name }}</h3>
@@ -170,14 +161,14 @@
 
             <div class="separator"></div>
 
-            <!-- Bouton pour voir les détails -->
+            <!-- 🆕 CHANGEMENT ICI : <button> → <a routerLink> -->
             <div class="shop-footer">
-              <button class="shop-btn">
+              <a [routerLink]="['/boutiques', boutique._id]" class="shop-btn">
                 <span>Voir les détails</span>
                 <svg class="btn-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                 </svg>
-              </button>
+              </a>
             </div>
 
           </div>
@@ -185,7 +176,7 @@
 
       </div>
 
-      <!-- Si on trouve rien -->
+      <!-- Aucun résultat -->
       <div class="no-results" *ngIf="boutiquesAffichees.length === 0">
         <div class="no-results-content">
           <div class="no-results-icon">
@@ -194,9 +185,7 @@
             </svg>
           </div>
           <h3 class="no-results-title">Aucune boutique trouvée</h3>
-          <p class="no-results-text">
-            Essayez de chercher autre chose ou changez de catégorie
-          </p>
+          <p class="no-results-text">Essayez de chercher autre chose ou changez de catégorie</p>
           <button class="reset-btn-large" (click)="toutReinitialiser()">
             <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
