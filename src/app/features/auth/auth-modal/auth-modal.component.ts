@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 import { LoginRequest, RegisterRequest } from '../../models/user.model';
 
 @Component({
@@ -43,7 +44,7 @@ export class AuthModalComponent implements OnInit {
   motDePasseVisible   = false;
   confirmVisible      = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     // Appliquer le mode initial passé par la navbar
@@ -74,11 +75,21 @@ export class AuthModalComponent implements OnInit {
       next: () => {
         this.chargement = false;
         this.succes = 'Connexion réussie ! Bienvenue 👋';
+        console.log('Utilisateur connecté:', this.loginData.email);
+        console.log('Role stored:', this.authService.obtenirRole());
+        console.log('Is admin:', this.authService.estAdmin());
         // Attendre 1 seconde puis fermer le modal
         setTimeout(() => {
           this.connecte.emit();
           this.fermer.emit();
+          if (this.authService.estAdmin()) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
         }, 1000);
+
+
       },
       error: (err) => {
         this.chargement = false;

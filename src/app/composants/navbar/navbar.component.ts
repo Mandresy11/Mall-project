@@ -4,6 +4,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../features/auth/auth.service';
 import { AuthModalComponent } from '../../features/auth/auth-modal/auth-modal.component';
 import { User } from '../../features/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +27,7 @@ export class NavbarComponent implements OnInit {
   utilisateur: User | null  = null;
   menuUtilisateurOuvert     = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     // On écoute les changements de connexion
@@ -61,6 +62,7 @@ export class NavbarComponent implements OnInit {
   deconnecter(): void {
     this.authService.deconnecter();
     this.menuUtilisateurOuvert = false;
+    this.router.navigate(['/']);
   }
 
   // Ouvrir ou fermer le menu dropdown

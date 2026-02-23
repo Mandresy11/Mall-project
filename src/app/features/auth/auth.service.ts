@@ -24,16 +24,13 @@ export class AuthService {
   connecter(donnees: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, donnees).pipe(
       tap(reponse => {
-        // Sauvegarder le token et l'utilisateur dans localStorage
-        console.log('Réponse de connexion:', reponse);
         localStorage.setItem('token', reponse.userLogged.token);
         localStorage.setItem('utilisateur', JSON.stringify(reponse.userLogged.user.username));
-        alert(`Bienvenue ${reponse.userLogged.user.username}!`);
-        // Mettre à jour le BehaviorSubject
+        localStorage.setItem('role', JSON.stringify(reponse.userLogged.user.role));
         this.utilisateurConnecte.next(reponse.userLogged.user);
       })
     );
-  }
+    }
 
   // inscription
   inscrire(donnees: RegisterRequest): Observable<UserResponse> {
@@ -62,6 +59,15 @@ export class AuthService {
 
   obtenirToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  obtenirRole(): string | null {
+    const role = localStorage.getItem('role');
+    return role ? JSON.parse(role) : null;
+  }
+
+  estAdmin(): boolean {
+    return this.obtenirRole() === 'admin';
   }
 
   obtenirUtilisateur(): User | null {
