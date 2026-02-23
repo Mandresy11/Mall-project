@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../features/auth/auth.service';
@@ -10,60 +10,65 @@ import { User } from '../../features/models/user.model';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, AuthModalComponent],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
+  encapsulation: ViewEncapsulation.None  // Les styles s'appliquent partout, même hors du <nav>
 })
 export class NavbarComponent implements OnInit {
 
+  // Menu burger mobile
   menuOuvert = false;
 
+  // Modal auth
   modalVisible                           = false;
   modeModal: 'connexion' | 'inscription' = 'connexion';
 
-  //authentification
-  utilisateur: User | null         = null;
-  menuUtilisateurOuvert            = false;
+  // Utilisateur connecté
+  utilisateur: User | null  = null;
+  menuUtilisateurOuvert     = false;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    // S'abonner à l'observable — mise à jour automatique à chaque login/logout
+    // On écoute les changements de connexion
     this.authService.utilisateur$.subscribe(u => {
       this.utilisateur = u;
     });
   }
 
+  // Ouvrir le modal en mode connexion
   ouvrirConnexion(): void {
-    this.modeModal   = 'connexion';
+    this.modeModal    = 'connexion';
     this.modalVisible = true;
-    this.menuOuvert  = false;  // Fermer le menu mobile si ouvert
+    this.menuOuvert   = false;
   }
 
+  // Ouvrir le modal en mode inscription
   ouvrirInscription(): void {
-    this.modeModal   = 'inscription';
+    this.modeModal    = 'inscription';
     this.modalVisible = true;
-    this.menuOuvert  = false;
+    this.menuOuvert   = false;
   }
 
+  // Fermer le modal
   fermerModal(): void {
     this.modalVisible = false;
   }
 
-//connecté
-  onConnecte(): void {
-  }
+  // Appelé quand la connexion est réussie
+  onConnecte(): void {}
 
-  //déconnexion
+  // Déconnecter l'utilisateur
   deconnecter(): void {
     this.authService.deconnecter();
     this.menuUtilisateurOuvert = false;
   }
 
-  //méthode pour basculer le menu utilisateur dans la navbar
+  // Ouvrir ou fermer le menu dropdown
   toggleMenuUtilisateur(): void {
     this.menuUtilisateurOuvert = !this.menuUtilisateurOuvert;
   }
 
-//obtient les initiales de l'utilisateur pour l'avatar
+  // Retourner les 2 premières initiales du nom complet
   getInitiales(): string {
     if (!this.utilisateur?.fullname) return '?';
     return this.utilisateur.fullname

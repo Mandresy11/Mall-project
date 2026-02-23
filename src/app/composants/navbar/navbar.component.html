@@ -24,56 +24,50 @@
       </li>
     </ul>
 
-
+    <!-- Actions navbar -->
     <div class="nav-actions">
 
-      <!--non connecté-->
+      <!-- Non connecté -->
       <ng-container *ngIf="!utilisateur">
         <button class="btn-connexion"   (click)="ouvrirConnexion()">Connexion</button>
         <button class="btn-inscription" (click)="ouvrirInscription()">Inscription</button>
       </ng-container>
 
-      <!--connecté-->
+      <!-- Connecté : Avatar + dropdown -->
       <div class="user-menu" *ngIf="utilisateur">
+
+        <!-- Bouton avatar -->
         <button class="btn-avatar" (click)="toggleMenuUtilisateur()">
-          <span class="avatar-initiales">{{ getInitiales() }}</span>
-          <span class="user-nom">{{ utilisateur.fullname }}</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2"
-               [style.transform]="menuUtilisateurOuvert ? 'rotate(180deg)' : ''"
-               style="transition: transform 0.2s ease">
+          <div class="avatar-cercle">{{ getInitiales() }}</div>
+          <span class="avatar-nom">{{ utilisateur.fullname }}</span>
+          <svg class="avatar-chevron"
+               [class.retourne]="menuUtilisateurOuvert"
+               width="14" height="14" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </button>
 
-        <!-- Dropdown -->
-        <div class="dropdown" *ngIf="menuUtilisateurOuvert">
-          <!-- En-tête avec infos utilisateur -->
-          <div class="dropdown-header">
-            <div class="avatar-grand">{{ getInitiales() }}</div>
+        <!-- Dropdown menu -->
+        <div class="dropdown-menu" *ngIf="menuUtilisateurOuvert">
+          <div class="dropdown-entete">
+            <div class="dropdown-avatar">{{ getInitiales() }}</div>
             <div class="dropdown-infos">
               <div class="dropdown-nom">{{ utilisateur.fullname }}</div>
               <div class="dropdown-username">@{{ utilisateur.username }}</div>
-              <div class="dropdown-role">{{ utilisateur.role }}</div>
+              <span class="dropdown-badge">{{ utilisateur.role }}</span>
             </div>
           </div>
-
-          <hr class="dropdown-divider" />
-
-          <!-- Lien profil -->
+          <div class="dropdown-separateur"></div>
           <button class="dropdown-item" (click)="menuUtilisateurOuvert = false">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
             Mon profil
           </button>
-
-          <!-- Déconnexion -->
-          <button class="dropdown-item deconnexion" (click)="deconnecter()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2">
+          <button class="dropdown-item item-rouge" (click)="deconnecter()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
               <polyline points="16 17 21 12 16 7"/>
               <line x1="21" y1="12" x2="9" y2="12"/>
@@ -81,13 +75,12 @@
             Se déconnecter
           </button>
         </div>
-      </div>
 
+      </div>
     </div>
 
     <!-- Burger mobile -->
-    <button class="menu-burger" (click)="menuOuvert = !menuOuvert"
-            [class.ouvert]="menuOuvert">
+    <button class="menu-burger" (click)="menuOuvert = !menuOuvert" [class.ouvert]="menuOuvert">
       <span></span>
       <span></span>
       <span></span>
@@ -97,24 +90,28 @@
 
   <!-- Menu mobile -->
   <div class="mobile-menu" [class.ouvert]="menuOuvert">
-    <a routerLink="/"          class="mobile-link" (click)="menuOuvert = false">Accueil</a>
-    <a routerLink="/boutiques" class="mobile-link" (click)="menuOuvert = false">Boutiques</a>
-    <a routerLink="/produits"  class="mobile-link" (click)="menuOuvert = false">Produits</a>
-    <a routerLink="/evenements"class="mobile-link" (click)="menuOuvert = false">Événements</a>
+    <a routerLink="/"           class="mobile-link" (click)="menuOuvert = false">Accueil</a>
+    <a routerLink="/boutiques"  class="mobile-link" (click)="menuOuvert = false">Boutiques</a>
+    <a routerLink="/produits"   class="mobile-link" (click)="menuOuvert = false">Produits</a>
+    <a routerLink="/evenements" class="mobile-link" (click)="menuOuvert = false">Événements</a>
     <div class="mobile-actions">
       <ng-container *ngIf="!utilisateur">
         <button class="btn-connexion"   (click)="ouvrirConnexion()">Connexion</button>
         <button class="btn-inscription" (click)="ouvrirInscription()">Inscription</button>
       </ng-container>
       <ng-container *ngIf="utilisateur">
-        <span class="mobile-user">👤 {{ utilisateur.fullname }}</span>
+        <div class="mobile-user-info">
+          <div class="mobile-avatar">{{ getInitiales() }}</div>
+          <span class="mobile-nom">{{ utilisateur.fullname }}</span>
+        </div>
         <button class="btn-connexion" (click)="deconnecter()">Se déconnecter</button>
       </ng-container>
     </div>
   </div>
+
 </nav>
 
-<!-- Modal d'authentification -->
+<!-- Modal auth EN DEHORS du <nav> pour éviter le problème de z-index -->
 <app-auth-modal
   *ngIf="modalVisible"
   [modeInitial]="modeModal"
