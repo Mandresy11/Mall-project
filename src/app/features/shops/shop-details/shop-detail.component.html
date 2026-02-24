@@ -1,7 +1,12 @@
 <div class="detail-page">
 
+  <!-- Chargement -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    Chargement...
+  </div>
+
   <!-- Boutique introuvable -->
-  <div *ngIf="!shop" class="not-found">
+  <div *ngIf="notFound && !isLoading" class="not-found">
     <div class="not-found-content">
       <div class="not-found-icon">🏪</div>
       <h2>Boutique introuvable</h2>
@@ -11,11 +16,17 @@
   </div>
 
   <!-- Boutique trouvée -->
-  <div *ngIf="shop">
+  <div *ngIf="shop && !notFound && !isLoading">
 
     <!-- HERO -->
     <div class="shop-hero">
-      <img [src]="shop.coverPhoto" [alt]="shop.name" class="hero-img" />
+      <img
+        [src]="shop.coverPhoto || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800'"
+        [alt]="shop.name"
+        class="hero-img"
+        loading="lazy"
+        (error)="($event.target.src='https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800')"
+      />
       <div class="hero-overlay"></div>
 
       <a routerLink="/boutiques" class="btn-retour">
@@ -26,13 +37,19 @@
       </a>
 
       <div class="hero-content">
-        <img [src]="shop.logo" [alt]="shop.name" class="hero-logo" />
+        <img
+          [src]="shop.logo || 'https://via.placeholder.com/80'"
+          [alt]="shop.name + ' logo'"
+          class="hero-logo"
+          loading="lazy"
+          (error)="($event.target.src='https://via.placeholder.com/80')"
+        />
         <div class="hero-text">
           <span class="hero-category">
-            {{ avoirIconeCategorie(shop.category) }} {{ shop.category }}
+            {{ avoirIconeCategorie(shop.category.icon) }} {{ shop.category.name }}
           </span>
           <h1 class="hero-title">{{ shop.name }}</h1>
-          <p class="hero-location">📍 {{ shop.location }}</p>
+          <p class="hero-location">📍 {{ shop.location.level }} - {{ shop.location.section }}</p>
         </div>
       </div>
     </div>
@@ -50,12 +67,35 @@
       <div class="card card-row">
         <div class="info-block">
           <h3 class="info-label"><span>🕐</span> Horaires d'ouverture</h3>
-          <p class="info-value">{{ shop.openingHours }}</p>
+          <div class="info-value">
+            <ng-container *ngIf="shop.openingHours && shop.openingHours.length > 0; else noHours">
+              <ul class="opening-hours-list">
+                <li *ngFor="let h of shop.openingHours">
+                  <span class="opening-day">
+                    {{ h.label ? h.label : ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'][h.day] }}:
+                  </span>
+                  <span class="opening-time">
+                    <ng-container *ngIf="h.isOpen && h.periods && h.periods.length > 0; else closed">
+                      <span *ngFor="let p of h.periods; let last = last">
+                        {{ p.open }} - {{ p.close }}<span *ngIf="!last">, </span>
+                      </span>
+                    </ng-container>
+                    <ng-template #closed>
+                      Fermé
+                    </ng-template>
+                  </span>
+                </li>
+              </ul>
+            </ng-container>
+            <ng-template #noHours>
+              <span>Aucun horaire disponible</span>
+            </ng-template>
+          </div>
         </div>
         <div class="divider-v"></div>
         <div class="info-block">
           <h3 class="info-label"><span>📞</span> Téléphone</h3>
-          <a [href]="getTelLink()" class="info-value info-link">{{ shop.phone }}</a>
+          <a [href]="getTelLink()" class="info-value info-link">{{ shop.phoneNumber }}</a>
         </div>
       </div>
 

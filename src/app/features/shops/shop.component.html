@@ -176,7 +176,7 @@
       </div>
 
       <!-- Aucun résultat -->
-      <div class="no-results" *ngIf="boutiquesAffichees.length === 0">
+      <div class="no-results" *ngIf="!isLoading && boutiquesAffichees.length === 0">
         <div class="no-results-content">
           <div class="no-results-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">

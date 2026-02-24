@@ -14,11 +14,8 @@ export interface Shop {
   };
   logo?: string;
   coverPhoto?: string;
-  openingHours?: {
-    day: string;
-    open: string;
-    close: string;
-  }[];
+  phoneNumber?: string;
+  openingHours?: OpeningHour[];
 }
 
 export interface Category {
@@ -26,4 +23,16 @@ export interface Category {
   name: string;
   icon: string;
   description?: string;
+}
+
+export interface OpeningHour {
+  day: number;                 // 0 = Sunday, 1 = Monday, etc.
+  isOpen: boolean;             // whether shop is open that day
+  label: string | null;        // optional custom label
+  periods: OpeningPeriod[];    // can support multiple periods per day
+}
+
+export interface OpeningPeriod {
+  open: string;   // "08:00"
+  close: string;  // "19:00"
 }
