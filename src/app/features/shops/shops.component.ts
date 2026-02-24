@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -17,7 +18,7 @@ import { environment } from '../../../environments/environment.development';
 })
 export class ShopsComponent implements OnInit {
 
-  constructor(private shopService: ShopService, private router: Router) {}
+  constructor(private shopService: ShopService, private router: Router, private cdr: ChangeDetectorRef) {}
 
   // Toutes nos boutiques
   shops: Shop[] = [];
@@ -45,23 +46,31 @@ export class ShopsComponent implements OnInit {
   // Charger toutes les boutiques (pour l'instant c'est du fake, plus tard ça viendra de l'API)
   chargerLesBoutiques(): void {
   this.isLoading = true;
-  this.shopService.chargerLesBoutiques().subscribe(data => {
-    this.shops = data.map(shop => ({
-      ...shop,
-      logo: shop.logo ? this.apiUrl + shop.logo : undefined,
-      coverPhoto: shop.coverPhoto ? this.apiUrl + shop.coverPhoto : undefined
-    }));
-    const uniqueCategoriesMap = new Map();
-    this.shops.forEach(shop => {
-      if (shop.category?._id) {
-        uniqueCategoriesMap.set(shop.category._id, shop.category);
-      }
-    });
-    this.categories = Array.from(uniqueCategoriesMap.values());
-    // Always reset filter to 'tout' after loading
-    this.categorieChoisie = 'tout';
-    this.appliquerLesFiltres();
-    this.isLoading = false;
+  this.shopService.chargerLesBoutiques().subscribe({
+    next: (data) => {
+      this.shops = data.map(shop => ({
+        ...shop,
+        logo: shop.logo ? this.apiUrl + shop.logo : undefined,
+        coverPhoto: shop.coverPhoto ? this.apiUrl + shop.coverPhoto : undefined
+      }));
+      console.log('shops assigned:', this.shops.length);
+
+      const uniqueCategoriesMap = new Map();
+      this.shops.forEach(shop => {
+        if (shop.category?._id) {
+          uniqueCategoriesMap.set(shop.category._id, shop.category);
+        }
+      });
+      this.categories = Array.from(uniqueCategoriesMap.values());
+      this.categorieChoisie = 'tout';
+      this.boutiquesAffichees = [...this.shops]; // 👈 directly assign instead of calling appliquerLesFiltres
+      this.isLoading = false;
+      this.cdr.detectChanges(); 
+    },
+    error: (err) => {
+      console.error(err);
+      this.isLoading = false;
+    }
   });
 }
 
