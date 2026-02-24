@@ -76,6 +76,9 @@ export class AuthService {
 
   private recupererUtilisateurLocal(): User | null {
     const data = localStorage.getItem('utilisateur');
+    if (!data || data === 'undefined') {
+      return null;
+    }
     return data ? JSON.parse(data) : null;
   }
 }

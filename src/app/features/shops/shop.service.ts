@@ -15,9 +15,15 @@ export class ShopService {
   constructor(private http: HttpClient) {}
 
   chargerLesBoutiques(): Observable<Shop[]> {
-    return this.http.get<{ shops: Shop[] }>(this.apiUrl)
-    .pipe(map(response => response.shops));
-  }
+  return this.http.get<{ shops: Shop[] }>(this.apiUrl).pipe(
+    map(response => response.shops),
+    tap(shops => {
+      shops.forEach(shop => {
+        if (shop._id) this.shopCache.set(shop._id, shop);
+      });
+    })
+  );
+}
 
   chargerBoutiqueParId(id: string): Observable<Shop> {
     if (this.shopCache.has(id)) {
