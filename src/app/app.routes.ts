@@ -4,7 +4,7 @@ import { ShopsComponent } from './features/shops/shops.component';
 import { ShopDetailComponent } from './features/shops/shop-details/shop-detail.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { EventsComponent } from './features/events/events.component';
-import { EventDetailComponent } from './features/events/event-details/event-detail.component'; // 🆕
+import { EventDetailComponent } from './features/events/event-detail/event-detail.component'; // 🆕
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 

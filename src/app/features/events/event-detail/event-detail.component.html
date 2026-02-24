@@ -1,0 +1,56 @@
+<div class="detail-page">
+
+  <!-- Événement introuvable -->
+  <div *ngIf="!event" class="not-found">
+    <div class="not-found-content">
+      <div class="not-found-icon">📅</div>
+      <h2>Événement introuvable</h2>
+      <p>Cet événement n'existe pas ou a été annulé.</p>
+      <a routerLink="/evenements" class="back-link">← Retour aux événements</a>
+    </div>
+  </div>
+
+  <!-- Événement trouvé -->
+  <div *ngIf="event">
+
+    <!-- HERO -->
+    <div class="event-hero">
+      <img [src]="event.image" [alt]="event.title" class="hero-img" />
+      <div class="hero-overlay"></div>
+
+      <!-- Bouton retour -->
+      <a routerLink="/evenements" class="btn-retour">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Retour
+      </a>
+
+      <!-- Badge gratuit -->
+      <div class="hero-badge-free" *ngIf="event.isFree">
+        <span>✅ Entrée gratuite</span>
+      </div>
+
+      <!-- Date badge -->
+      <div class="hero-date-badge">
+        <div class="date-day">{{ getJour(event.date) }}</div>
+        <div class="date-month">{{ getMoisAbbr(event.date) }}</div>
+      </div>
+
+      <!-- Titre-->
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="hero-category">
+            {{ getCategorieIcone(event.category) }} {{ event.category }}
+          </span>
+          <h1 class="hero-title">{{ event.title }}</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- CORPS-->
+    <div class="page-body">
+    </div>
+
+  </div>
+</div>
