@@ -47,19 +47,16 @@
     <!-- CORPS -->
     <div class="page-body">
 
-      <!--Card Description -->
+      <!-- Card Description -->
       <div class="card">
         <h2 class="card-title"><span>📋</span> À propos de l'événement</h2>
         <p class="card-text">{{ event.description }}</p>
       </div>
 
-      <!-- Card Infos pratiques : date / heure / lieu / prix -->
+      <!-- Card Infos pratiques -->
       <div class="card infos-card">
-
         <h2 class="card-title"><span>📌</span> Informations pratiques</h2>
-
         <div class="infos-grid">
-
           <div class="info-item">
             <div class="info-icon-wrap purple">📅</div>
             <div>
@@ -67,7 +64,6 @@
               <div class="info-value">{{ formaterDate(event.date) }}</div>
             </div>
           </div>
-
           <div class="info-item">
             <div class="info-icon-wrap blue">🕐</div>
             <div>
@@ -75,7 +71,6 @@
               <div class="info-value">{{ event.time }}</div>
             </div>
           </div>
-
           <div class="info-item">
             <div class="info-icon-wrap pink">📍</div>
             <div>
@@ -83,7 +78,6 @@
               <div class="info-value">{{ event.location }}</div>
             </div>
           </div>
-
           <div class="info-item">
             <div class="info-icon-wrap green">🎟️</div>
             <div>
@@ -93,9 +87,57 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
+
+      <!--  Bouton de réservation -->
+      <div class="card reservation-card">
+        <div class="reservation-content">
+          <div class="reservation-text">
+            <h3>{{ event.isFree ? 'Réservez votre place gratuite' : 'Réservez votre billet' }}</h3>
+            <p>{{ event.isFree ? 'Places limitées — réservez dès maintenant !' : 'Tarif : ' + formaterPrix(event.price!) + ' par personne' }}</p>
+          </div>
+          <button class="btn-reserver">
+            <span>🎟️</span>
+            {{ event.isFree ? 'Réserver gratuitement' : 'Acheter un billet' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Événements similaires -->
+      <section class="similaires-section" *ngIf="evenementsSimilaires.length > 0">
+
+        <div class="section-header">
+          <h2 class="section-title">Autres événements</h2>
+          <a routerLink="/evenements" class="voir-tous">Voir tous →</a>
+        </div>
+
+        <div class="similaires-grid">
+          <div class="sim-card" *ngFor="let sim of evenementsSimilaires">
+
+            <div class="sim-img-wrapper">
+              <img [src]="sim.image" [alt]="sim.title" class="sim-img" loading="lazy" />
+              <div class="sim-overlay"></div>
+              <span class="sim-date-badge">
+                {{ getJour(sim.date) }} {{ getMoisAbbr(sim.date) }}
+              </span>
+              <span class="sim-badge-free" *ngIf="sim.isFree">Gratuit</span>
+            </div>
+
+            <div class="sim-body">
+              <div class="sim-category">{{ getCategorieIcone(sim.category) }} {{ sim.category }}</div>
+              <h3 class="sim-title">{{ sim.title }}</h3>
+              <div class="sim-footer">
+                <span class="sim-prix" [class.gratuit]="sim.isFree">
+                  {{ sim.isFree ? 'Gratuit' : formaterPrix(sim.price!) }}
+                </span>
+                <a [routerLink]="['/evenements', sim._id]" class="sim-btn">Voir →</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
     </div>
   </div>

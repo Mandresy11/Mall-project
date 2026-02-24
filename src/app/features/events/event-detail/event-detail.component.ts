@@ -26,6 +26,7 @@ export class EventDetailComponent implements OnInit {
 
   eventId: string = '';
   event: EventDetail | null = null;
+  evenementsSimilaires: EventDetail[] = []; // 🆕
 
   private tousLesEvenements: EventDetail[] = [
     {
@@ -91,6 +92,21 @@ export class EventDetailComponent implements OnInit {
   ngOnInit(): void {
     this.eventId = this.route.snapshot.paramMap.get('id') || '';
     this.event   = this.tousLesEvenements.find(e => e._id === this.eventId) || null;
+
+    // Charger 3 événements similaires (même catégorie, sans l'actuel)
+    if (this.event) {
+      this.evenementsSimilaires = this.tousLesEvenements
+        .filter(e => e._id !== this.eventId && e.category === this.event!.category)
+        .slice(0, 3);
+
+      // Si pas assez dans la même catégorie, compléter avec d'autres
+      if (this.evenementsSimilaires.length < 3) {
+        const autres = this.tousLesEvenements
+          .filter(e => e._id !== this.eventId && e.category !== this.event!.category)
+          .slice(0, 3 - this.evenementsSimilaires.length);
+        this.evenementsSimilaires = [...this.evenementsSimilaires, ...autres];
+      }
+    }
   }
 
   formaterDate(dateStr: string): string {
@@ -115,7 +131,6 @@ export class EventDetailComponent implements OnInit {
     return icones[categorie] || '📅';
   }
 
-  // 🆕 Formater le prix en Ariary
   formaterPrix(prix: number): string {
     return prix.toLocaleString('fr-FR') + ' Ar';
   }
