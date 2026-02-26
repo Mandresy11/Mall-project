@@ -1,14 +1,251 @@
-<div class="dashboard-container">
-  <div class="welcome-section">
-    <h1>Welcome Admin</h1>
-    <p>Manage your MegaMall operations</p>
-  </div>
 
-  <div class="stats-section">
-    <div class="stat-box">
-      <div class="stat-label">Total Shops</div>
-      <div class="stat-value">150+</div>
-      <div class="stat-icon">🏬</div>
+
+<div class="dashboard-wrapper">
+
+  <!--SKELETON LOADER-->
+  @if (isLoading) {
+    <div class="skeleton-wrap">
+      <div class="skeleton sk-hero"></div>
+      <div class="skeleton-kpi-grid">
+        <div class="skeleton sk-kpi"></div>
+        <div class="skeleton sk-kpi"></div>
+        <div class="skeleton sk-kpi"></div>
+        <div class="skeleton sk-kpi"></div>
+      </div>
+      <div class="skeleton-content-grid">
+        <div class="skeleton sk-table"></div>
+        <div class="skeleton-side">
+          <div class="skeleton sk-side-1"></div>
+          <div class="skeleton sk-side-2"></div>
+        </div>
+      </div>
     </div>
-  </div>
+  }
+
+  <!--ÉTAT D'ERREUR-->
+  @if (hasError && !isLoading) {
+    <div class="error-state">
+      <div class="error-icon">⚠️</div>
+      <h3>Impossible de charger les données</h3>
+      <p>Vérifiez que le backend est démarré et que vous êtes connecté.</p>
+      <button class="btn-retry" (click)="retry()">↻ Réessayer</button>
+    </div>
+  }
+
+
+  @if (!isLoading && !hasError) {
+
+    <!--HERO WELCOME -->
+    <header class="welcome-hero">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <p class="greeting-label">{{ greetingHour }},</p>
+          <h1 class="hero-admin-name">
+            {{ adminName }}
+            <span class="wave">👋</span>
+          </h1>
+          <p class="hero-date">{{ currentDate }}</p>
+        </div>
+        <div class="hero-badge">
+          <span class="badge-emoji">🏛️</span>
+          <span class="badge-text">MegaMall</span>
+          <span class="badge-sub">Panneau d'administration</span>
+        </div>
+      </div>
+    </header>
+
+    <!--KPI CARDS -->
+    <section class="kpi-grid">
+      @for (card of statCards; track card.label) {
+        <article class="kpi-card {{ card.gradient }}">
+          <div class="kpi-icon">{{ card.icon }}</div>
+          <div class="kpi-body">
+            <span class="kpi-value">{{ card.value }}{{ card.suffix ?? '' }}</span>
+            <span class="kpi-label">{{ card.label }}</span>
+          </div>
+          <div class="kpi-circle"></div>
+        </article>
+      }
+    </section>
+
+    <div class="main-grid">
+
+      <!--TABLEAU DES BOUTIQUES-->
+      <section class="card table-card">
+
+        <div class="card-header">
+          <h2 class="card-title">🏬 Boutiques</h2>
+          <div class="header-controls">
+            <div class="search-wrapper">
+              <span class="search-icon">🔍</span>
+              <input
+                type="search"
+                class="search-input"
+                placeholder="Rechercher une boutique…"
+                [value]="searchQuery"
+                (input)="onSearch($event)"
+              />
+            </div>
+            <a routerLink="/boutiques/ajouter" class="btn-add">+ Ajouter</a>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="shops-table">
+            <thead>
+              <tr>
+                <th>Boutique</th>
+                <th>Catégorie</th>
+                <th>Section</th>
+                <th>Niveau</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              @if (boutiquesFiltered.length === 0) {
+                <tr>
+                  <td colspan="5" class="empty-cell">
+                    @if (searchQuery) {
+                      🔎 Aucun résultat pour « {{ searchQuery }} »
+                    } @else {
+                      📭 Aucune boutique enregistrée.
+                    }
+                  </td>
+                </tr>
+              }
+
+              @for (shop of boutiquesFiltered; track shop._id) {
+                <tr class="shop-row">
+
+                  <!-- Nom + avatar -->
+                  <td class="cell-name">
+                    <div class="shop-avatar" [style.background]="shop.color">
+                      @if (shop.logo) {
+                        <img [src]="shop.logo" [alt]="shop.name" loading="lazy" />
+                      } @else {
+                        {{ shop.initials }}
+                      }
+                    </div>
+                    <span class="shop-name-text">{{ shop.name }}</span>
+                  </td>
+
+                  <td>
+                    <span class="tag-category">
+                      {{ shop.category.icon }} {{ shop.category.name }}
+                    </span>
+                  </td>
+
+                  <td class="cell-muted">
+                    {{ shop.location.section }}
+                  </td>
+
+                  <td>
+                    <span class="pill-level">Niveau {{ shop.location.level }}</span>
+                  </td>
+
+                  <!-- Actions -->
+                  <td class="cell-actions">
+                    <a
+                      [routerLink]="['/boutiques', shop._id]"
+                      class="action-btn btn-view"
+                      title="Voir"
+                    >👁️</a>
+                    <a
+                      [routerLink]="['/boutiques', shop._id, 'modifier']"
+                      class="action-btn btn-edit"
+                      title="Modifier"
+                    >✏️</a>
+                  </td>
+
+                </tr>
+              }
+
+            </tbody>
+          </table>
+        </div>
+
+        <p class="table-footer">
+          @if (boutiquesFiltered.length === boutiques.length) {
+            {{ boutiques.length }} boutique{{ boutiques.length !== 1 ? 's' : '' }} au total
+          } @else {
+            {{ boutiquesFiltered.length }} résultat{{ boutiquesFiltered.length !== 1 ? 's' : '' }}
+            sur {{ boutiques.length }}
+          }
+        </p>
+
+      </section>
+
+      <!--SIDEBAR -->
+      <aside class="sidebar">
+
+        <!-- Graphique catégories -->
+        <section class="card category-card">
+          <h2 class="card-title">📊 Répartition par catégorie</h2>
+
+          @if (categoryStats.length === 0) {
+            <p class="empty-text">Aucune catégorie disponible.</p>
+          }
+
+          <ul class="category-list">
+            @for (cat of categoryStats; track cat.name) {
+              <li class="category-item">
+                <div class="cat-header">
+                  <span class="cat-icon">{{ cat.icon }}</span>
+                  <span class="cat-name">{{ cat.name }}</span>
+                  <span class="cat-count">{{ cat.count }}</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="cat.percent"></div>
+                </div>
+                <span class="cat-percent">{{ cat.percent }}%</span>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <!-- Boutiques récentes -->
+        <section class="card recent-card">
+          <h2 class="card-title">🆕 Boutiques récentes</h2>
+
+          <ul class="recent-list">
+            @for (shop of boutiquesRecentes; track shop._id) {
+              <li class="recent-item">
+
+                <div class="recent-avatar" [style.background]="shop.color">
+                  @if (shop.logo) {
+                    <img [src]="shop.logo" [alt]="shop.name" loading="lazy" />
+                  } @else {
+                    {{ shop.initials }}
+                  }
+                </div>
+
+                <div class="recent-info">
+                  <span class="recent-name">{{ shop.name }}</span>
+                  <span class="recent-cat">
+                    {{ shop.category.icon }} {{ shop.category.name }}
+                  </span>
+                </div>
+
+                <span class="recent-level">N{{ shop.location.level }}</span>
+
+              </li>
+            }
+          </ul>
+
+          <a routerLink="/boutiques" class="btn-see-all">
+            Voir toutes les boutiques →
+          </a>
+        </section>
+
+      </aside>
+
+    </div>
+
+  }
+
 </div>
