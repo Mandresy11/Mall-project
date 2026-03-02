@@ -30,7 +30,9 @@ export class ShopDetailComponent implements OnInit {
   showModal = false;
   isEditMode = false;
   isSaving = false;
+
   editingProductId: string | null = null;
+
   reviews: Review[] = [];
   categories: ProductCategory[] = [];
   imagePreview: string | null = null;
@@ -43,6 +45,12 @@ export class ShopDetailComponent implements OnInit {
     stock: 0,
     category: ''
   };
+
+  showReviewModal = false;
+  isSavingReview = false;
+  reviewErreur = '';
+  reviewForm = { rating: 0, comment: '' };
+  hoveredStar = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -85,7 +93,7 @@ export class ShopDetailComponent implements OnInit {
 
     // get reviews for this shop
     this.shopDetailsService.getReviewByShop(shopId).subscribe({
-  next: (reviews) => { 
+  next: (reviews) => {
     this.reviews = reviews;
     this.cdr.detectChanges();
   },
@@ -233,6 +241,62 @@ export class ShopDetailComponent implements OnInit {
       error: () => alert('Erreur lors de la suppression.')
     });
   }
+
+  // ===== review modal =====
+  get estUser(): boolean {
+  return this.authService.estConnecte() && !this.authService.estAdmin();
+}
+
+ouvrirModalAvis(): void {
+  this.reviewForm = { rating: 0, comment: '' };
+  this.reviewErreur = '';
+  this.hoveredStar = 0;
+  this.showReviewModal = true;
+  this.cdr.detectChanges();
+}
+
+fermerModalAvis(): void {
+  this.showReviewModal = false;
+  this.cdr.detectChanges();
+}
+
+setRating(star: number): void {
+  this.reviewForm.rating = star;
+}
+
+soumettreAvis(): void {
+  if (!this.reviewForm.rating) {
+    this.reviewErreur = 'Veuillez choisir une note.';
+    return;
+  }
+  if (!this.reviewForm.comment.trim()) {
+    this.reviewErreur = 'Veuillez écrire un commentaire.';
+    return;
+  }
+
+  const user = this.authService.obtenirUtilisateur();
+  console.log('userId:', user?._id);
+  console.log('shopId:', this.shop!._id);
+  console.log('rating:', this.reviewForm.rating);
+  console.log('comment:', this.reviewForm.comment);
+
+  this.isSavingReview = true;
+  this.reviewErreur = '';
+
+  this.shopDetailsService.addReview(this.shop!._id, this.reviewForm).subscribe({
+    next: (review) => {
+      const user = this.authService.obtenirUtilisateur();
+      this.reviews = [{ ...review, user: { _id: user?._id || '', username: user?.username || 'Vous' } }, ...this.reviews];
+      this.isSavingReview = false;
+      this.showReviewModal = false;
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      this.reviewErreur = err.error?.message || 'Erreur lors de l\'envoi.';
+      this.isSavingReview = false;
+    }
+  });
+}
 
   // ===== BOUTIQUE =====
 

@@ -26,6 +26,7 @@ export class AuthService {
       tap(reponse => {
         localStorage.setItem('token', reponse.userLogged.token);
         localStorage.setItem('utilisateur', JSON.stringify(reponse.userLogged.user.username));
+        localStorage.setItem('id', JSON.stringify(reponse.userLogged.user._id));
         localStorage.setItem('role', JSON.stringify(reponse.userLogged.user.role));
         this.utilisateurConnecte.next(reponse.userLogged.user);
       })
@@ -50,6 +51,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('utilisateur');
     localStorage.removeItem('role');
+    localStorage.removeItem('id');
     this.utilisateurConnecte.next(null);
   }
 

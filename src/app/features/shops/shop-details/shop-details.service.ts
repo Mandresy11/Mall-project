@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment.development';
+import { AuthService } from '../../auth/auth.service';
 
 export interface Product {
   _id: string;
@@ -37,7 +38,7 @@ export class ShopDetailsService {
 
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Récupérer les produits d'une boutique
   getProductsByShop(shopId: string): Observable<Product[]> {
@@ -67,6 +68,17 @@ export class ShopDetailsService {
       .post<{ product: Product }>(`${this.apiUrl}/api/products/add`, formData)
       .pipe(map(res => res.product));
   }
+
+  addReview(shopId: string, data: { rating: number; comment: string }): Observable<Review> {
+  const userId = JSON.parse(localStorage.getItem('id') || 'null')
+  return this.http
+    .post<{ review: Review }>(`${this.apiUrl}/api/reviews/add`, {
+      userId: userId,
+      shopId: shopId,
+      ...data
+    })
+    .pipe(map(res => res.review));
+}
 
   // Modifier un produit
   updateProduct(productId: string, formData: FormData): Observable<Product> {

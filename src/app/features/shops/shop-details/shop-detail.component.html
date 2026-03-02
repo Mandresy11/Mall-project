@@ -158,6 +158,12 @@
       Avis clients
       <span class="products-count">{{ reviews.length }}</span>
     </h2>
+    <button *ngIf="estUser" class="btn-add-product" (click)="ouvrirModalAvis()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Ajouter un avis
+    </button>
   </div>
 
   <div *ngIf="reviews.length === 0" class="no-products">
@@ -184,6 +190,54 @@
 
     </div>
   </div>
+
+ <!-- ========== MODAL AVIS ========== -->
+<div class="modal-overlay" *ngIf="showReviewModal" (click)="fermerModalAvis()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h2>⭐ Laisser un avis</h2>
+      <button class="modal-close" (click)="fermerModalAvis()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Étoiles -->
+      <div class="field-group">
+        <label>Note *</label>
+        <div style="display:flex; gap:0.4rem;">
+          <span
+            *ngFor="let star of [1,2,3,4,5]"
+            (mouseenter)="hoveredStar = star"
+            (mouseleave)="hoveredStar = 0"
+            (click)="setRating(star)"
+            style="font-size:1.8rem; cursor:pointer; transition: transform 0.15s;"
+            [style.color]="star <= (hoveredStar || reviewForm.rating) ? '#f59e0b' : '#d1d5db'"
+            [style.transform]="star <= hoveredStar ? 'scale(1.2)' : 'scale(1)'"
+          >★</span>
+        </div>
+      </div>
+
+      <!-- Commentaire -->
+      <div class="field-group">
+        <label>Commentaire *</label>
+        <textarea [(ngModel)]="reviewForm.comment" rows="4" placeholder="Décrivez votre expérience..."></textarea>
+      </div>
+
+      <!-- Erreur -->
+      <p *ngIf="reviewErreur" style="color:#ef4444; font-size:0.85rem; margin:0;">⚠ {{ reviewErreur }}</p>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="fermerModalAvis()">Annuler</button>
+      <button class="btn-save" (click)="soumettreAvis()" [disabled]="isSavingReview">
+        {{ isSavingReview ? '⏳ Envoi...' : '✅ Envoyer' }}
+      </button>
+    </div>
+
+  </div>
+</div>
 
   <!-- ========== MODAL PRODUIT ========== -->
   <div class="modal-overlay" *ngIf="showModal" (click)="fermerModal()">
