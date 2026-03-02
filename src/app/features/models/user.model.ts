@@ -2,11 +2,12 @@ export interface User {
   _id?: string;
   username: string;
   fullname: string;
-  gender: 'male' | 'female';
+  gender: 'male' | 'female' | 'other';  // ← ajout de 'other' pour les comptes Google
   email: string;
   password?: string;
+  googleId?: string;                     // ← nouveau : pour les comptes Google
   isActive?: boolean;
-  role?: 'client' | 'admin';
+  role?: 'client' | 'admin' | 'shop';   // ← ajout de 'shop' qui existe dans le backend
   createdAt?: string;
 }
 
@@ -18,7 +19,7 @@ export interface LoginRequest {
 export interface RegisterRequest {
   username: string;
   fullname: string;
-  gender: 'male' | 'female';
+  gender: 'male' | 'female' | 'other';  // ← ajout de 'other'
   email: string;
   password: string;
 }
@@ -28,11 +29,11 @@ export interface AuthResponse {
     token: string;
     user: User;
   };
-};
+}
 
 export interface UserResponse {
   userCreated: {
     token: string;
     user: User;
-  }
-};
+  };
+}

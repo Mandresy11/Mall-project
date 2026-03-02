@@ -1,34 +1,33 @@
-
 <div class="modal-overlay" (click)="onFermer($event)">
-  <div class="modal-container" (click)="$event.stopPropagation()">
+
+  <div class="modal-contenu">
 
     <!-- Bouton fermer -->
     <button class="btn-fermer" (click)="onFermer()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2.5">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18"/>
         <line x1="6"  y1="6" x2="18" y2="18"/>
       </svg>
     </button>
 
-    <!-- Décorations de fond -->
-    <div class="modal-decoration">
-      <div class="deco-circle deco-1"></div>
-      <div class="deco-circle deco-2"></div>
-      <div class="deco-circle deco-3"></div>
-    </div>
-
     <!-- En-tête -->
-    <div class="modal-header">
-      <div class="logo-icon">🏬</div>
-      <h2 class="modal-titre">MegaMall</h2>
+    <div class="modal-entete">
+      <div class="modal-logo">🏬</div>
+      <h2 class="modal-titre">
+        <ng-container *ngIf="mode === 'connexion'">Bon retour !</ng-container>
+        <ng-container *ngIf="mode === 'inscription'">Créer un compte</ng-container>
+        <ng-container *ngIf="mode === 'forgot'">Mot de passe oublié</ng-container>
+      </h2>
       <p class="modal-sous-titre">
-        {{ mode === 'connexion' ? 'Heureux de vous revoir !' : 'Rejoignez la communauté' }}
+        <ng-container *ngIf="mode === 'connexion'">Heureux de vous revoir !</ng-container>
+        <ng-container *ngIf="mode === 'inscription'">Rejoignez la communauté</ng-container>
+        <ng-container *ngIf="mode === 'forgot'">Recevez un lien de réinitialisation</ng-container>
       </p>
     </div>
 
-    <!-- Onglets Connexion / Inscription -->
-    <div class="onglets">
+    <!-- Onglets Connexion / Inscription (masqués en mode forgot) -->
+    <div class="onglets" *ngIf="mode !== 'forgot'">
       <button class="onglet" [class.actif]="mode === 'connexion'"
               (click)="basculerMode('connexion')">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
@@ -52,10 +51,9 @@
       </button>
     </div>
 
-    <!--FORMULAIRE CONNEXION-->
+    <!-- FORMULAIRE CONNEXION-->
     <form *ngIf="mode === 'connexion'" class="formulaire" (ngSubmit)="onConnexion()">
 
-      <!-- Email -->
       <div class="champ-groupe">
         <label class="champ-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -66,18 +64,13 @@
           Adresse email
         </label>
         <div class="champ-input-wrapper">
-          <input
-            type="email"
-            class="champ-input"
-            placeholder="votre@email.com"
-            [(ngModel)]="loginData.email"
-            name="loginEmail"
-            autocomplete="email"
-          />
+          <input type="email" class="champ-input"
+                 placeholder="votre@email.com"
+                 [(ngModel)]="loginData.email"
+                 name="loginEmail" autocomplete="email" />
         </div>
       </div>
 
-      <!-- Mot de passe -->
       <div class="champ-groupe">
         <label class="champ-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -88,30 +81,21 @@
           Mot de passe
         </label>
         <div class="champ-input-wrapper">
-          <input
-            [type]="motDePasseVisible ? 'text' : 'password'"
-            class="champ-input avec-icone"
-            placeholder="••••••••"
-            [(ngModel)]="loginData.password"
-            name="loginPassword"
-            autocomplete="current-password"
-          />
+          <input [type]="motDePasseVisible ? 'text' : 'password'"
+                 class="champ-input avec-icone"
+                 placeholder="••••••••"
+                 [(ngModel)]="loginData.password"
+                 name="loginPassword" autocomplete="current-password" />
           <button type="button" class="btn-voir-mdp"
                   (click)="motDePasseVisible = !motDePasseVisible">
-            <!-- Œil ouvert -->
             <svg *ngIf="!motDePasseVisible" width="16" height="16" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
               <circle cx="12" cy="12" r="3"/>
             </svg>
-            <!-- Œil barré -->
             <svg *ngIf="motDePasseVisible" width="16" height="16" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
-                       a18.45 18.45 0 0 1 5.06-5.94
-                       M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
-                       a18.5 18.5 0 0 1-2.16 3.19
-                       m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
               <line x1="1" y1="1" x2="23" y2="23"/>
             </svg>
           </button>
@@ -120,15 +104,17 @@
 
       <!-- Lien mot de passe oublié -->
       <div class="lien-mdp-oublie">
-        <a href="#" (click)="$event.preventDefault()">Mot de passe oublié ?</a>
+        <a href="#" (click)="$event.preventDefault(); basculerMode('forgot')">
+          Mot de passe oublié ?
+        </a>
       </div>
 
-      <!-- Messages erreur / succès -->
+      <!-- Messages -->
       <div class="message-erreur" *ngIf="erreur">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8"  x2="12"    y2="12"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
           <line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         {{ erreur }}
@@ -141,7 +127,6 @@
         {{ succes }}
       </div>
 
-      <!-- Bouton Se connecter -->
       <button type="submit" class="btn-principal" [disabled]="chargement">
         <span *ngIf="!chargement">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -161,22 +146,29 @@
         </span>
       </button>
 
-      <!-- Lien vers inscription -->
+      <div class="separateur"><span>ou continuer avec</span></div>
+
+      <button type="button" class="btn-google" (click)="connexionGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.7 0 6.7 5.4 2.8 13.3l7.8 6C12.5 13 17.8 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.2-10.1 7.2-17z"/>
+          <path fill="#FBBC05" d="M10.6 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l8.1-6.1z"/>
+          <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.9l-8.1 6.1C6.7 42.6 14.7 48 24 48z"/>
+        </svg>
+        Continuer avec Google
+      </button>
+
       <p class="lien-basculer">
         Pas encore de compte ?
-        <a href="#" (click)="$event.preventDefault(); basculerMode('inscription')">
-          Créer un compte
-        </a>
+        <a href="#" (click)="$event.preventDefault(); basculerMode('inscription')">Créer un compte</a>
       </p>
 
     </form>
 
-    <!--FORMULAIRE INSCRIPTION -->
+    <!-- FORMULAIRE INSCRIPTION -->
     <form *ngIf="mode === 'inscription'" class="formulaire" (ngSubmit)="onInscription()">
 
-      <!-- Nom complet + Username (côte à côte) -->
       <div class="champs-ligne">
-
         <div class="champ-groupe">
           <label class="champ-label">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -205,15 +197,13 @@
           </label>
           <div class="champ-input-wrapper">
             <input type="text" class="champ-input"
-                   placeholder="@username"
+                   placeholder="nomutilisateur"
                    [(ngModel)]="registerData.username"
                    name="username" />
           </div>
         </div>
-
       </div>
 
-      <!-- Email -->
       <div class="champ-groupe">
         <label class="champ-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -227,8 +217,7 @@
           <input type="email" class="champ-input"
                  placeholder="votre@email.com"
                  [(ngModel)]="registerData.email"
-                 name="registerEmail"
-                 autocomplete="email" />
+                 name="registerEmail" autocomplete="email" />
         </div>
       </div>
 
@@ -236,22 +225,19 @@
       <div class="champ-groupe">
         <label class="champ-label">Genre</label>
         <div class="genre-choix">
-          <label class="genre-option" [class.selectionne]="registerData.gender === 'male'">
-            <input type="radio" name="gender" value="male"
-                   [(ngModel)]="registerData.gender" hidden />
-            <span class="genre-icone">👨</span>
-            <span>Homme</span>
-          </label>
-          <label class="genre-option" [class.selectionne]="registerData.gender === 'female'">
-            <input type="radio" name="gender" value="female"
-                   [(ngModel)]="registerData.gender" hidden />
-            <span class="genre-icone">👩</span>
-            <span>Femme</span>
-          </label>
+          <button type="button" class="genre-option"
+                  [class.selectionne]="registerData.gender === 'male'"
+                  (click)="registerData.gender = 'male'">
+            <span class="genre-icone">👨</span> Homme
+          </button>
+          <button type="button" class="genre-option"
+                  [class.selectionne]="registerData.gender === 'female'"
+                  (click)="registerData.gender = 'female'">
+            <span class="genre-icone">👩</span> Femme
+          </button>
         </div>
       </div>
 
-      <!-- Mot de passe -->
       <div class="champ-groupe">
         <label class="champ-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -276,33 +262,25 @@
             </svg>
             <svg *ngIf="motDePasseVisible" width="16" height="16" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
-                       a18.45 18.45 0 0 1 5.06-5.94
-                       M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
-                       a18.5 18.5 0 0 1-2.16 3.19
-                       m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
               <line x1="1" y1="1" x2="23" y2="23"/>
             </svg>
           </button>
         </div>
-        <!-- Indicateur de force du mot de passe -->
         <div class="force-mdp" *ngIf="registerData.password.length > 0">
-          <div class="force-barre" [class.fort]="passwordAssezLong"
-               [class.faible]="!passwordAssezLong"></div>
-          <span class="force-texte" [class.fort]="passwordAssezLong"
-                [class.faible]="!passwordAssezLong">
-            {{ passwordAssezLong ? '✓ Mot de passe valide' : '⚠ Trop court (min. 6 caractères)' }}
+          <div class="force-barre" [class.fort]="passwordAssezLong" [class.faible]="!passwordAssezLong"></div>
+          <span class="force-texte" [class.fort]="passwordAssezLong" [class.faible]="!passwordAssezLong">
+            {{ passwordAssezLong ? 'Fort' : 'Trop court' }}
           </span>
         </div>
       </div>
 
-      <!-- Confirmer mot de passe -->
       <div class="champ-groupe">
         <label class="champ-label">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2">
-            <polyline points="9 11 12 14 22 4"/>
-            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
           Confirmer le mot de passe
         </label>
@@ -323,23 +301,19 @@
             </svg>
             <svg *ngIf="confirmVisible" width="16" height="16" viewBox="0 0 24 24"
                  fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
-                       a18.45 18.45 0 0 1 5.06-5.94
-                       M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8
-                       a18.5 18.5 0 0 1-2.16 3.19
-                       m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
               <line x1="1" y1="1" x2="23" y2="23"/>
             </svg>
           </button>
         </div>
       </div>
 
-      <!-- Messages erreur / succès -->
+      <!-- Messages -->
       <div class="message-erreur" *ngIf="erreur">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8"  x2="12"    y2="12"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
           <line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
         {{ erreur }}
@@ -352,7 +326,6 @@
         {{ succes }}
       </div>
 
-      <!-- Bouton Créer mon compte -->
       <button type="submit" class="btn-principal" [disabled]="chargement">
         <span *ngIf="!chargement">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -373,15 +346,105 @@
         </span>
       </button>
 
-      <!-- Lien vers connexion -->
+      <div class="separateur"><span>ou continuer avec</span></div>
+
+      <button type="button" class="btn-google" (click)="connexionGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.7 0 6.7 5.4 2.8 13.3l7.8 6C12.5 13 17.8 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.2-10.1 7.2-17z"/>
+          <path fill="#FBBC05" d="M10.6 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l8.1-6.1z"/>
+          <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.9l-8.1 6.1C6.7 42.6 14.7 48 24 48z"/>
+        </svg>
+        Continuer avec Google
+      </button>
+
       <p class="lien-basculer">
         Déjà un compte ?
-        <a href="#" (click)="$event.preventDefault(); basculerMode('connexion')">
-          Se connecter
-        </a>
+        <a href="#" (click)="$event.preventDefault(); basculerMode('connexion')">Se connecter</a>
       </p>
 
     </form>
+
+    <!-- FORMULAIRE MOT DE PASSE OUBLIÉ -->
+    <div *ngIf="mode === 'forgot'" class="formulaire">
+
+      <p class="forgot-description">
+        Entrez votre adresse email et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+      </p>
+
+      <!-- Message succès -->
+      <div class="message-succes" *ngIf="forgotSucces">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        {{ forgotSucces }}
+      </div>
+
+      <!-- Formulaire (masqué si succès) -->
+      <ng-container *ngIf="!forgotSucces">
+        <div class="champ-groupe">
+          <label class="champ-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Adresse email
+          </label>
+          <div class="champ-input-wrapper">
+            <input type="email" class="champ-input"
+                   placeholder="votre@email.com"
+                   [(ngModel)]="emailOublie"
+                   name="emailOublie" />
+          </div>
+        </div>
+
+        <!-- Message erreur -->
+        <div class="message-erreur" *ngIf="forgotErreur">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          {{ forgotErreur }}
+        </div>
+
+        <!-- BOUTON GOOGLE si compte Google détecté -->
+        <div *ngIf="forgotEstCompteGoogle" style="margin-top: 8px;">
+          <button type="button" class="btn-google" (click)="connexionGoogle()">
+            <svg width="18" height="18" viewBox="0 0 48 48">
+              <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.7 2.5 30.2 0 24 0 14.7 0 6.7 5.4 2.8 13.3l7.8 6C12.5 13 17.8 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.6 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.2-10.1 7.2-17z"/>
+              <path fill="#FBBC05" d="M10.6 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.8-6A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l8.1-6.1z"/>
+              <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.2-7.7 2.2-6.2 0-11.5-4.2-13.4-9.9l-8.1 6.1C6.7 42.6 14.7 48 24 48z"/>
+            </svg>
+            Continuer avec Google
+          </button>
+        </div>
+
+        <button type="button" class="btn-principal"
+                [disabled]="forgotChargement" (click)="onForgotPassword()">
+          <span *ngIf="!forgotChargement">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Envoyer le lien
+          </span>
+          <span *ngIf="forgotChargement">Envoi en cours...</span>
+        </button>
+      </ng-container>
+
+      <p class="lien-basculer" style="margin-top: 16px;">
+        <a href="#" (click)="$event.preventDefault(); basculerMode('connexion')">
+          ← Retour à la connexion
+        </a>
+      </p>
+
+    </div>
 
   </div>
 </div>

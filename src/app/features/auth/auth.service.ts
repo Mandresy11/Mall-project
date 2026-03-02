@@ -20,32 +20,59 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  // connexion
+  //  CONNEXION EMAIL/MOT DE PASSE
   connecter(donnees: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, donnees).pipe(
       tap(reponse => {
-        localStorage.setItem('token', reponse.userLogged.token);
-        localStorage.setItem('utilisateur', JSON.stringify(reponse.userLogged.user.username));
-        localStorage.setItem('role', JSON.stringify(reponse.userLogged.user.role));
-        this.utilisateurConnecte.next(reponse.userLogged.user);
-      })
-    );
-    }
-
-  // inscription
-  inscrire(donnees: RegisterRequest): Observable<UserResponse> {
-    return this.http.post<UserResponse>(`${this.apiUrl}/register`, donnees).pipe(
-      tap(reponse => {
-        console.log('Réponse de connexion:', reponse);
-        localStorage.setItem('token', reponse.userCreated.token);
-        localStorage.setItem('utilisateur', JSON.stringify(reponse.userCreated.user.username));
-        alert(`Bienvenue ${reponse.userCreated.user.username}!`);
-        this.utilisateurConnecte.next(reponse.userCreated.user);
+        this.sauvegarderSession(
+          reponse.userLogged.token,
+          reponse.userLogged.user
+        );
       })
     );
   }
 
-  // déconnexion
+  // INSCRIPTION
+  inscrire(donnees: RegisterRequest): Observable<UserResponse> {
+    return this.http.post<UserResponse>(`${this.apiUrl}/register`, donnees).pipe(
+      tap(reponse => {
+        this.sauvegarderSession(
+          reponse.userCreated.token,
+          reponse.userCreated.user
+        );
+      })
+    );
+  }
+
+  // CONNEXION GOOGLE : redirige vers le backend
+  connexionGoogle(): void {
+    window.location.href = environment.apiUrl + '/api/auth/google';
+  }
+
+  // CALLBACK GOOGLE : sauvegarde le token reçu dans l'URL
+  traiterCallbackGoogle(token: string, role: string, username: string, fullname: string, id: string): void {
+    const user: User = {
+      _id:      id,
+      username: username,
+      fullname: fullname,
+      role:     role as 'client' | 'admin' | 'shop',
+      gender:   'other',   //
+      email:    ''
+    };
+    this.sauvegarderSession(token, user);
+  }
+
+  // MOT DE PASSE OUBLIÉ
+  motDePasseOublie(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  // RÉINITIALISER MOT DE PASSE
+  reinitialiserMotDePasse(token: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/reset-password/${token}`, { password });
+  }
+
+  // DÉCONNEXION
   deconnecter(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('utilisateur');
@@ -53,7 +80,7 @@ export class AuthService {
     this.utilisateurConnecte.next(null);
   }
 
-  // utilitaires
+  // UTILITAIRES
   estConnecte(): boolean {
     return !!localStorage.getItem('token');
   }
@@ -75,11 +102,17 @@ export class AuthService {
     return this.utilisateurConnecte.getValue();
   }
 
+  // PRIVÉ : sauvegarder la session
+  private sauvegarderSession(token: string, user: User): void {
+    localStorage.setItem('token', token);
+    localStorage.setItem('utilisateur', JSON.stringify(user.username));
+    localStorage.setItem('role', JSON.stringify(user.role));
+    this.utilisateurConnecte.next(user);
+  }
+
   private recupererUtilisateurLocal(): User | null {
     const data = localStorage.getItem('utilisateur');
-    if (!data || data === 'undefined') {
-      return null;
-    }
+    if (!data || data === 'undefined') return null;
     return data ? JSON.parse(data) : null;
   }
 }
