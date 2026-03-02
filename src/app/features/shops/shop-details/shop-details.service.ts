@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment.development';
+import { AuthService } from '../../auth/auth.service';
 
 export interface Product {
   _id: string;
@@ -11,6 +12,18 @@ export interface Product {
   stock: number;
   image: string;
   description: string;
+}
+
+export interface Review {
+  _id: string;
+  user: {
+    _id: string;
+    username: string;
+  };
+  shop: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
 }
 
 export interface ProductCategory {
@@ -25,7 +38,7 @@ export class ShopDetailsService {
 
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   // Récupérer les produits d'une boutique
   getProductsByShop(shopId: string): Observable<Product[]> {
@@ -33,6 +46,14 @@ export class ShopDetailsService {
       .get<{ products: Product[] }>(`${this.apiUrl}/api/products/shop/${shopId}`)
       .pipe(map(res => res.products));
   }
+
+    // Recuperer les avis d'une boutique
+   getReviewByShop(shopId: string): Observable<Review[]> {
+       return this.http
+         .get<{ reviews: Review[] }>(`${this.apiUrl}/api/reviews/${shopId}`)
+         .pipe(map(res => res.reviews));
+     }
+
 
   // Récupérer toutes les catégories produit
   getCategories(): Observable<ProductCategory[]> {
@@ -47,6 +68,17 @@ export class ShopDetailsService {
       .post<{ product: Product }>(`${this.apiUrl}/api/products/add`, formData)
       .pipe(map(res => res.product));
   }
+
+  addReview(shopId: string, data: { rating: number; comment: string }): Observable<Review> {
+  const userId = JSON.parse(localStorage.getItem('id') || 'null')
+  return this.http
+    .post<{ review: Review }>(`${this.apiUrl}/api/reviews/add`, {
+      userId: userId,
+      shopId: shopId,
+      ...data
+    })
+    .pipe(map(res => res.review));
+}
 
   // Modifier un produit
   updateProduct(productId: string, formData: FormData): Observable<Product> {
