@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
 import { Category, Shop } from '../models/shop.model';
 import { map, tap, of } from 'rxjs';
+import { Review } from './shop-details/shop-details.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,6 @@ export class ShopService {
       })
     );
   }
-
 
   chargerBoutiqueParId(id: string): Observable<Shop> {
     return this.obtenirBoutiqueParId(id);

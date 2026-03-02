@@ -6,7 +6,7 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ShopService } from '../shop.service';
 import { AuthService } from '../../auth/auth.service';
 import { environment } from '../../../../environments/environment.development';
-import { ShopDetailsService, Product, ProductCategory } from './shop-details.service';
+import { ShopDetailsService, Product, ProductCategory, Review } from './shop-details.service';
 
 @Component({
   selector: 'app-shop-detail',
@@ -31,6 +31,7 @@ export class ShopDetailComponent implements OnInit {
   isEditMode = false;
   isSaving = false;
   editingProductId: string | null = null;
+  reviews: Review[] = [];
   categories: ProductCategory[] = [];
   imagePreview: string | null = null;
   selectedFile: File | null = null;
@@ -82,10 +83,26 @@ export class ShopDetailComponent implements OnInit {
       }
     });
 
+    // get reviews for this shop
+    this.shopDetailsService.getReviewByShop(shopId).subscribe({
+  next: (reviews) => { 
+    this.reviews = reviews;
+    this.cdr.detectChanges();
+  },
+  error: (err) => {
+    console.error('Reviews error:', err); // 👈 check if it's an error
+    this.reviews = [];
+  }
+});
+
     this.shopDetailsService.getCategories().subscribe({
       next: (cats) => this.categories = cats,
       error: () => {}
     });
+  }
+
+  getStars(rating: number): number[] {
+    return Array(5).fill(0).map((_, i) => i + 1);
   }
 
   chargerProduits(shopId: string): void {
