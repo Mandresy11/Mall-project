@@ -36,9 +36,7 @@
 
       <div class="hero-content">
         <div class="hero-text">
-          <span class="hero-category">
-            {{ event.category.name }}
-          </span>
+          <span class="hero-category">{{ event.category.name }}</span>
           <h1 class="hero-title">{{ event.title }}</h1>
         </div>
       </div>
@@ -75,9 +73,9 @@
             <div class="info-icon-wrap pink">📍</div>
             <div>
               <div class="info-label">Lieu</div>
-              <!-- ✅ CORRECTION : optional chaining sur shop et location -->
               <div class="info-value">
-                {{ event.shop?.name }} - Niveau {{ event.shop?.location?.level }}, Section {{ event.shop?.location?.section }}
+                {{ event.shop?.name }} - Niveau {{ event.shop?.location?.level }},
+                Section {{ event.shop?.location?.section }}
               </div>
             </div>
           </div>
@@ -93,16 +91,89 @@
         </div>
       </div>
 
-      <!-- Bouton de réservation -->
-      <div class="card reservation-card">
+      <!--     Card Réservation payante -->
+      <div class="card reservation-card reservation-card--payante" *ngIf="!event.isFree">
+
+        <div class="reservation-header">
+          <div>
+            <h3 class="reservation-titre">Réserver vos billets</h3>
+            <p class="reservation-sous-titre">
+              {{ formaterPrix(event.price!) }} par personne
+            </p>
+          </div>
+          <div class="reservation-prix-badge">
+            {{ formaterPrix(event.price!) }}
+            <span>/billet</span>
+          </div>
+        </div>
+
+        <!-- Contrôle quantité -->
+        <div class="reservation-qty-row">
+          <span class="qty-label-text">Nombre de billets</span>
+          <div class="qty-control">
+            <button class="qty-ctrl-btn" (click)="decrementerQuantite()" [disabled]="ticketQuantity <= 1">
+              &#x2212;
+            </button>
+            <span class="qty-ctrl-val">{{ ticketQuantity }}</span>
+            <button class="qty-ctrl-btn" (click)="incrementerQuantite()">
+              &#x2B;
+            </button>
+          </div>
+        </div>
+
+        <!-- Total -->
+        <div class="reservation-total-row">
+          <span>Total</span>
+          <span class="reservation-total-val">
+            {{ formaterPrix(event.price! * ticketQuantity) }}
+          </span>
+        </div>
+
+        <!-- Message erreur -->
+        <div class="reservation-error" *ngIf="ticketError">
+          ⚠️ {{ ticketError }}
+        </div>
+
+        <!-- Bouton -->
+        <button
+          class="btn-reserver-billet"
+          [class.btn-reserver-billet--success]="ticketSuccess"
+          [disabled]="isAddingTicket"
+          (click)="reserverBillet()">
+
+          <!-- Chargement -->
+          <ng-container *ngIf="isAddingTicket">
+            <span class="reserver-spinner"></span>
+            Réservation en cours...
+          </ng-container>
+
+          <!-- Succès -->
+          <ng-container *ngIf="!isAddingTicket && ticketSuccess">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Ajouté au panier !
+          </ng-container>
+
+          <!-- Normal -->
+          <ng-container *ngIf="!isAddingTicket && !ticketSuccess">
+            <span>🎟️</span>
+            Réserver {{ ticketQuantity }} billet{{ ticketQuantity > 1 ? 's' : '' }}
+          </ng-container>
+
+        </button>
+      </div>
+
+      <!-- Card Réservation gratuite (inchangée, juste renommée) -->
+      <div class="card reservation-card" *ngIf="event.isFree">
         <div class="reservation-content">
           <div class="reservation-text">
-            <h3>{{ event.isFree ? 'Réservez votre place gratuite' : 'Réservez votre billet' }}</h3>
-            <p>{{ event.isFree ? 'Places limitées — réservez dès maintenant !' : 'Tarif : ' + formaterPrix(event.price!) + ' par personne' }}</p>
+            <h3>Réservez votre place gratuite</h3>
+            <p>Places limitées — réservez dès maintenant !</p>
           </div>
           <button class="btn-reserver">
             <span>🎟️</span>
-            {{ event.isFree ? 'Réserver gratuitement' : 'Acheter un billet' }}
+            Réserver gratuitement
           </button>
         </div>
       </div>

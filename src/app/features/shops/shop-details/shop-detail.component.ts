@@ -8,6 +8,7 @@ import { AuthService } from '../../auth/auth.service';
 import { environment } from '../../../../environments/environment.development';
 import { ShopDetailsService, Product, ProductCategory, Review } from './shop-details.service';
 import { ShopStatusBadgeComponent } from '../../../shared/shop-status-badge/shop-status-badge.component';
+import { CartService } from '../../cart/cart.service'; //
 
 @Component({
   selector: 'app-shop-detail',
@@ -20,7 +21,7 @@ export class ShopDetailComponent implements OnInit {
 
   shop: Shop | null = null;
   isLoading = true;
-  notFound = false;
+  notFound  = false;
   products: Product[] = [];
 
   apiUrl     = environment.apiUrl;
@@ -33,10 +34,10 @@ export class ShopDetailComponent implements OnInit {
   editingProductId: string | null = null;
 
   // Données
-  reviews:    Review[]         = [];
+  reviews:    Review[]          = [];
   categories: ProductCategory[] = [];
-  imagePreview: string | null  = null;
-  selectedFile: File | null    = null;
+  imagePreview: string | null   = null;
+  selectedFile: File | null     = null;
 
   productForm = {
     name:        '',
@@ -53,16 +54,21 @@ export class ShopDetailComponent implements OnInit {
   reviewForm      = { rating: 0, comment: '' };
   hoveredStar     = 0;
 
+  //     Panier
+  addingToCart:  { [productId: string]: boolean } = {}; // loader par produit
+  cartSuccess:   { [productId: string]: boolean } = {}; // feedback vert par produit
+
   constructor(
     private route:              ActivatedRoute,
     private router:             Router,
     private shopService:        ShopService,
     public  authService:        AuthService,
     private shopDetailsService: ShopDetailsService,
-    private cdr:                ChangeDetectorRef
+    private cdr:                ChangeDetectorRef,
+    private cartService:        CartService //
   ) {}
 
-  // Getters
+  // ─── Getters ─────────────────────────────────────────────────────────────
 
   get estAdmin(): boolean {
     return this.authService.estAdmin();
@@ -72,12 +78,12 @@ export class ShopDetailComponent implements OnInit {
     return this.authService.estConnecte() && !this.authService.estAdmin();
   }
 
-  // Cycle de vie
+  // ─── Cycle de vie ────────────────────────────────────────────────────────
 
   ngOnInit(): void {
     const shopId = this.route.snapshot.paramMap.get('id');
     if (!shopId) {
-      this.notFound = true;
+      this.notFound  = true;
       this.isLoading = false;
       return;
     }
@@ -119,7 +125,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // Produits
+  // ─── Produits ────────────────────────────────────────────────────────────
 
   chargerProduits(shopId: string): void {
     this.shopDetailsService.getProductsByShop(shopId).subscribe({
@@ -135,19 +141,19 @@ export class ShopDetailComponent implements OnInit {
   }
 
   ouvrirModalAjout(): void {
-    this.isEditMode      = false;
+    this.isEditMode       = false;
     this.editingProductId = null;
-    this.productForm     = { name: '', description: '', price: 0, stock: 0, category: '' };
-    this.imagePreview    = null;
-    this.selectedFile    = null;
-    this.showModal       = true;
+    this.productForm      = { name: '', description: '', price: 0, stock: 0, category: '' };
+    this.imagePreview     = null;
+    this.selectedFile     = null;
+    this.showModal        = true;
     this.cdr.detectChanges();
   }
 
   ouvrirModalEdition(p: Product): void {
-    this.isEditMode      = true;
+    this.isEditMode       = true;
     this.editingProductId = p._id;
-    this.productForm     = {
+    this.productForm      = {
       name:        p.name,
       description: p.description || '',
       price:       p.price,
@@ -252,7 +258,38 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // Avis
+  // ───     Panier ────────────────────────────────────────────────────────────
+
+  ajouterAuPanier(productId: string): void {
+    if (!this.authService.estConnecte()) {
+      alert('Veuillez vous connecter pour ajouter au panier.');
+      return;
+    }
+
+    this.addingToCart[productId] = true;
+    this.cartSuccess[productId]  = false;
+
+    this.cartService.ajouterAuPanier(productId, 1).subscribe({
+      next: () => {
+        this.addingToCart[productId] = false;
+        this.cartSuccess[productId]  = true;
+        this.cdr.detectChanges();
+
+        // Réinitialiser le feedback après 2 secondes
+        setTimeout(() => {
+          this.cartSuccess[productId] = false;
+          this.cdr.detectChanges();
+        }, 2000);
+      },
+      error: (err) => {
+        this.addingToCart[productId] = false;
+        alert(err.error?.message || "Erreur lors de l'ajout au panier.");
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  // ─── Avis ────────────────────────────────────────────────────────────────
 
   getStars(rating: number): number[] {
     return Array(5).fill(0).map((_, i) => i + 1);
@@ -290,8 +327,8 @@ export class ShopDetailComponent implements OnInit {
 
     this.shopDetailsService.addReview(this.shop!._id, this.reviewForm).subscribe({
       next: (review) => {
-        const user    = this.authService.obtenirUtilisateur();
-        this.reviews  = [
+        const user   = this.authService.obtenirUtilisateur();
+        this.reviews = [
           {
             ...review,
             user: { _id: user?._id || '', username: user?.username || 'Vous' }
@@ -309,7 +346,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // Boutique
+  // ─── Boutique ────────────────────────────────────────────────────────────
 
   supprimerBoutique(): void {
     if (!this.shop?._id) return;
@@ -324,10 +361,10 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // Helpers
+  // ─── Helpers ─────────────────────────────────────────────────────────────
 
   avoirIconeCategorie(icon: string): string {
-    return icon || '🏪';
+    return icon || '&#x1F3EA;';
   }
 
   getTelLink(): string {

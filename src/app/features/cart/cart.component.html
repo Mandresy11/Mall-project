@@ -1,0 +1,137 @@
+<div class="cart-page">
+
+  <div class="cart-header">
+    <div class="container">
+      <h1 class="cart-title">
+        <span>&#x1F6D2;</span> Mon panier
+      </h1>
+      <p class="cart-subtitle" *ngIf="cart && totalArticles > 0">
+        {{ totalArticles }} article{{ totalArticles > 1 ? 's' : '' }} dans votre panier
+      </p>
+    </div>
+  </div>
+
+  <div class="container cart-body">
+
+    <!-- Chargement -->
+    <div class="cart-loading" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Chargement de votre panier...</p>
+    </div>
+
+    <!-- Panier vide -->
+    <div class="cart-empty" *ngIf="!isLoading && (!cart || totalArticles === 0)">
+      <div class="empty-icon">&#x1F6D2;</div>
+      <h2>Votre panier est vide</h2>
+      <p>Découvrez nos boutiques et ajoutez des produits !</p>
+      <a routerLink="/boutiques" class="btn-primary">
+        &#x1F3EA; Voir les boutiques
+      </a>
+    </div>
+
+    <!-- Contenu panier -->
+    <div class="cart-content" *ngIf="!isLoading && cart && totalArticles > 0">
+
+      <div class="cart-left">
+
+        <!-- Message erreur -->
+        <div class="cart-error" *ngIf="erreur">
+          <span>&#x26A0;&#xFE0F; {{ erreur }}</span>
+          <button (click)="erreur = ''">&#x2715;</button>
+        </div>
+
+        <!-- Bouton vider -->
+        <div class="cart-actions-top">
+          <button class="btn-vider" (click)="vider()">
+            &#x1F5D1;&#xFE0F; Vider le panier
+          </button>
+        </div>
+
+        <!-- Articles groupés par boutique -->
+        <div class="shop-group" *ngFor="let groupe of itemsParBoutique">
+
+          <div class="shop-group-header">
+            <img *ngIf="groupe.shopLogo" [src]="groupe.shopLogo" [alt]="groupe.shopName" class="shop-group-logo" />
+            <span class="shop-group-name">{{ groupe.shopName }}</span>
+          </div>
+
+          <div class="cart-item" *ngFor="let item of groupe.items">
+
+            <div class="item-img-wrapper">
+              <img [src]="item.product.image" [alt]="item.product.name" class="item-img" />
+            </div>
+
+            <div class="item-info">
+              <h3 class="item-name">{{ item.product.name }}</h3>
+              <p class="item-price-unit">{{ item.priceAtAdd | number:'1.0-0' }} MAD / unité</p>
+              <p class="item-stock" *ngIf="item.product.stock <= 5">
+                &#x26A0;&#xFE0F; Plus que {{ item.product.stock }} en stock
+              </p>
+            </div>
+
+            <div class="item-qty">
+              <button class="qty-btn" (click)="modifierQuantite(item.product._id, item.quantity - 1)"
+                [disabled]="item.quantity <= 1">&#x2212;</button>
+              <span class="qty-value">{{ item.quantity }}</span>
+              <button class="qty-btn" (click)="modifierQuantite(item.product._id, item.quantity + 1)"
+                [disabled]="item.quantity >= item.product.stock">&#x2B;</button>
+            </div>
+
+            <div class="item-total">
+              <span>{{ (item.priceAtAdd * item.quantity) | number:'1.0-0' }} MAD</span>
+            </div>
+
+            <button class="item-delete" (click)="supprimer(item.product._id)" title="Supprimer">
+              &#x1F5D1;&#xFE0F;
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Récapitulatif commande -->
+      <div class="cart-right">
+        <div class="order-summary">
+
+          <h2 class="summary-title">Récapitulatif</h2>
+
+          <div class="summary-line">
+            <span>Sous-total ({{ totalArticles }} articles)</span>
+            <span>{{ totalPrix | number:'1.0-0' }} MAD</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span>Total</span>
+            <span class="total-amount">{{ totalPrix | number:'1.0-0' }} MAD</span>
+          </div>
+
+          <div class="note-field">
+            <label>Note pour la boutique (optionnel)</label>
+            <textarea
+              [(ngModel)]="noteCommande"
+              rows="3"
+              placeholder="Instructions spéciales, allergies...">
+            </textarea>
+          </div>
+
+          <button
+            class="btn-commander"
+            (click)="passerCommande()"
+            [disabled]="isOrdering">
+            <span *ngIf="!isOrdering">&#x2705; Confirmer la commande</span>
+            <span *ngIf="isOrdering">&#x23F3; Traitement en cours...</span>
+          </button>
+
+          <a routerLink="/boutiques" class="btn-continuer">
+            &#x2190; Continuer mes achats
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

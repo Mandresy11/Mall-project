@@ -1,0 +1,70 @@
+<div class="confirm-page">
+
+  <div class="confirm-loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Chargement...</p>
+  </div>
+
+  <div class="confirm-error" *ngIf="erreur && !isLoading">
+    <p>&#x26A0;&#xFE0F; {{ erreur }}</p>
+    <a routerLink="/boutiques" class="btn-back">Retour aux boutiques</a>
+  </div>
+
+  <div class="confirm-content" *ngIf="order && !isLoading">
+
+    <!-- En-tête succès -->
+    <div class="confirm-hero">
+      <div class="success-icon">&#x2705;</div>
+      <h1>Commande confirmée !</h1>
+      <p class="order-number">N° {{ order.orderNumber }}</p>
+      <span class="status-pill">En attente de confirmation</span>
+    </div>
+
+    <div class="confirm-body">
+
+      <!-- Détail articles -->
+      <div class="confirm-card">
+        <h2 class="confirm-card-title">&#x1F4CB; Détail de la commande</h2>
+
+        <div class="confirm-item" *ngFor="let item of order.items">
+          <img
+            *ngIf="item.product?.image"
+            [src]="item.product.image"
+            [alt]="item.productName"
+            class="confirm-item-img"
+          />
+          <div class="confirm-item-info">
+            <span class="confirm-item-name">{{ item.productName }}</span>
+            <span class="confirm-item-shop">{{ item.shop?.name }}</span>
+          </div>
+          <div class="confirm-item-qty">x{{ item.quantity }}</div>
+          <div class="confirm-item-price">
+            {{ (item.priceAtOrder * item.quantity) | number:'1.0-0' }} MAD
+          </div>
+        </div>
+
+        <div class="confirm-total">
+          <span>Total</span>
+          <span class="confirm-total-amount">{{ order.totalAmount | number:'1.0-0' }} MAD</span>
+        </div>
+      </div>
+
+      <!-- Note -->
+      <div class="confirm-card" *ngIf="order.note">
+        <h2 class="confirm-card-title">&#x1F4DD; Votre note</h2>
+        <p class="confirm-note">{{ order.note }}</p>
+      </div>
+
+      <!-- Actions -->
+      <div class="confirm-actions">
+        <a routerLink="/commandes" class="btn-secondary">
+          &#x1F4CB; Voir mes commandes
+        </a>
+        <a routerLink="/boutiques" class="btn-primary">
+          &#x1F6CD;&#xFE0F; Continuer mes achats
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>

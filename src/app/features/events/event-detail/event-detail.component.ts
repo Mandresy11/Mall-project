@@ -4,6 +4,8 @@ import { environment } from '../../../../environments/environment.development';
 import { EventsService } from '../events.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { CartService } from '../../cart/cart.service';     //
+import { AuthService } from '../../auth/auth.service';     //
 
 interface EventDetail {
   _id: string;
@@ -27,16 +29,24 @@ interface EventDetail {
 })
 export class EventDetailComponent implements OnInit {
 
-  apiUrl = environment.apiUrl;
+  apiUrl    = environment.apiUrl;
   isLoading = true;
-  notFound = false;
-  event: Event | null = null;
-  evenementsSimilaires: Event[] = []; // 🆕
+  notFound  = false;
+  event:    Event | null = null;
+  evenementsSimilaires: Event[] = [];
+
+  //     Réservation billet
+  ticketQuantity  = 1;
+  isAddingTicket  = false;
+  ticketSuccess   = false;
+  ticketError     = '';
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
+    private route:        ActivatedRoute,
+    private router:       Router,
     private eventsService: EventsService,
+    private cartService:  CartService,   //
+    private authService:  AuthService    //
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +64,6 @@ export class EventDetailComponent implements OnInit {
           image: data.image ? `${this.apiUrl}${data.image}` : undefined,
           eventDateTime: new Date(data.eventDateTime)
         };
-        // ✅ Charger les similaires ICI, après que this.event est assigné
         this.chargerEvenementsSimilaires(eventId);
         this.isLoading = false;
       },
@@ -62,20 +71,18 @@ export class EventDetailComponent implements OnInit {
         this.notFound = true;
         this.isLoading = false;
       }
-      })
-    }
+    });
+  }
 
-    chargerEvenementsSimilaires(currentId: string): void {
+  chargerEvenementsSimilaires(currentId: string): void {
     this.eventsService.chargerLesEvenements().subscribe({
       next: (data) => {
         const currentCategoryId = (this.event!.category as any)?._id;
 
-        // Même catégorie, sans l'événement actuel
         let similaires = data
           .filter(e => e._id !== currentId && (e.category as any)?._id === currentCategoryId)
           .slice(0, 3);
 
-        // Compléter si moins de 3
         if (similaires.length < 3) {
           const autres = data
             .filter(e => e._id !== currentId && (e.category as any)?._id !== currentCategoryId)
@@ -93,12 +100,54 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
+  //     Réserver des billets
+  reserverBillet(): void {
+    if (!this.authService.estConnecte()) {
+      this.ticketError = 'Veuillez vous connecter pour réserver.';
+      return;
+    }
+
+    this.isAddingTicket = true;
+    this.ticketSuccess  = false;
+    this.ticketError    = '';
+
+    this.cartService.ajouterBillet(
+      this.event!._id,
+      this.ticketQuantity
+    ).subscribe({
+      next: () => {
+        this.isAddingTicket = false;
+        this.ticketSuccess  = true;
+        setTimeout(() => this.ticketSuccess = false, 2500);
+      },
+      error: (err) => {
+        this.isAddingTicket = false;
+        this.ticketError    = err.error?.message || 'Erreur lors de la réservation.';
+        setTimeout(() => this.ticketError = '', 3000);
+      }
+    });
+  }
+
+  //     Contrôle quantité billets
+  incrementerQuantite(): void {
+    this.ticketQuantity++;
+  }
+
+  decrementerQuantite(): void {
+    if (this.ticketQuantity > 1) this.ticketQuantity--;
+  }
+
+  // ─── Formatage (inchangé) ────────────────────────────────────────────────
   formaterDate(date: Date): string {
-    return new Date(date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    return new Date(date).toLocaleDateString('fr-FR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
   }
 
   formaterHeure(date: Date): string {
-    return new Date(date).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    return new Date(date).toLocaleTimeString('fr-FR', {
+      hour: '2-digit', minute: '2-digit'
+    });
   }
 
   getJour(date: Date): string {
@@ -106,7 +155,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   getMoisAbbr(date: Date): string {
-    const mois = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+    const mois = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
     return mois[new Date(date).getMonth()];
   }
 

@@ -3,74 +3,92 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../features/auth/auth.service';
 import { AuthModalComponent } from '../../features/auth/auth-modal/auth-modal.component';
+import { CartService } from '../../features/cart/cart.service';
+import { CartDrawerComponent } from '../../shared/cart-drawer/cart-drawer.component';
 import { User } from '../../features/models/user.model';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, AuthModalComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    AuthModalComponent,
+    CartDrawerComponent
+  ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  encapsulation: ViewEncapsulation.None  // Les styles s'appliquent partout, même hors du <nav>
+  encapsulation: ViewEncapsulation.None
 })
 export class NavbarComponent implements OnInit {
 
-  // Menu burger mobile
-  menuOuvert = false;
-
-  // Modal auth
-  modalVisible                           = false;
+  menuOuvert             = false;
+  modalVisible           = false;
   modeModal: 'connexion' | 'inscription' = 'connexion';
+  utilisateur: User | null = null;
+  menuUtilisateurOuvert  = false;
+  cartCount              = 0;
+  drawerVisible          = false;
 
-  // Utilisateur connecté
-  utilisateur: User | null  = null;
-  menuUtilisateurOuvert     = false;
-
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private cartService: CartService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // On écoute les changements de connexion
+    // Écouter connexion/déconnexion
     this.authService.utilisateur$.subscribe(u => {
       this.utilisateur = u;
+      if (u) {
+        // Charger le panier dès la connexion
+        this.cartService.chargerPanier().subscribe();
+      } else {
+        this.cartService.reinitialiser();
+      }
+    });
+
+    // Écouter le compteur en temps réel
+    this.cartService.count$.subscribe(count => {
+      this.cartCount = count;
     });
   }
 
-  // Ouvrir le modal en mode connexion
   ouvrirConnexion(): void {
     this.modeModal    = 'connexion';
     this.modalVisible = true;
     this.menuOuvert   = false;
   }
 
-  // Ouvrir le modal en mode inscription
   ouvrirInscription(): void {
     this.modeModal    = 'inscription';
     this.modalVisible = true;
     this.menuOuvert   = false;
   }
 
-  // Fermer le modal
   fermerModal(): void {
     this.modalVisible = false;
   }
 
-  // Appelé quand la connexion est réussie
-  onConnecte(): void {}
+  onConnecte(): void {
+    // Charger le panier après connexion via modal
+    this.cartService.chargerPanier().subscribe();
+  }
 
-  // Déconnecter l'utilisateur
   deconnecter(): void {
     this.authService.deconnecter();
+    this.cartService.reinitialiser();
     this.menuUtilisateurOuvert = false;
+    this.drawerVisible         = false;
     this.router.navigate(['/']);
   }
 
-  // Ouvrir ou fermer le menu dropdown
   toggleMenuUtilisateur(): void {
     this.menuUtilisateurOuvert = !this.menuUtilisateurOuvert;
   }
 
-  // Retourner les 2 premières initiales du nom complet
   getInitiales(): string {
     if (!this.utilisateur?.fullname) return '?';
     return this.utilisateur.fullname
@@ -79,5 +97,15 @@ export class NavbarComponent implements OnInit {
       .join('')
       .toUpperCase()
       .slice(0, 2);
+  }
+
+  ouvrirDrawer(): void {
+    this.drawerVisible         = true;
+    this.menuUtilisateurOuvert = false;
+    this.menuOuvert            = false;
+  }
+
+  fermerDrawer(): void {
+    this.drawerVisible = false;
   }
 }
