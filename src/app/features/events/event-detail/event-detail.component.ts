@@ -4,8 +4,8 @@ import { environment } from '../../../../environments/environment.development';
 import { EventsService } from '../events.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
-import { CartService } from '../../cart/cart.service';     //
-import { AuthService } from '../../auth/auth.service';     //
+import { CartService } from '../../cart/cart.service';
+import { AuthService } from '../../auth/auth.service';
 
 interface EventDetail {
   _id: string;
@@ -137,7 +137,7 @@ export class EventDetailComponent implements OnInit {
     if (this.ticketQuantity > 1) this.ticketQuantity--;
   }
 
-  // ─── Formatage (inchangé) ────────────────────────────────────────────────
+  //  Formatage
   formaterDate(date: Date): string {
     return new Date(date).toLocaleDateString('fr-FR', {
       day: 'numeric', month: 'long', year: 'numeric'

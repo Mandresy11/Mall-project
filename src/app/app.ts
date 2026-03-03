@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './composants/navbar/navbar.component';
 import { ToastComponent } from './shared/toast/toast.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { ToastComponent } from './shared/toast/toast.component';
     FormsModule,
     RouterModule,
     NavbarComponent,
-    ToastComponent
+    ToastComponent,
+    FooterComponent
   ],
 })
 export class AppComponent {

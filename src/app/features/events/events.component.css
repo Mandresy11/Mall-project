@@ -1,6 +1,6 @@
-/* ════════════════════════════════════════════
-   EVENTS PAGE — Bleu marine + couleur
-════════════════════════════════════════════ */
+/*
+   EVENTS PAGE
+ */
 :root {
   --navy:       #0f1e3d;
   --blue:       #1d4ed8;
@@ -20,9 +20,9 @@
 * { box-sizing: border-box; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
-/* ════════════════════════════════════════════
+/*
    HEADER
-════════════════════════════════════════════ */
+ */
 .page-header {
   background: var(--navy);
   padding: 5rem 0 10rem;
@@ -143,9 +143,7 @@
 }
 .btn-admin-create:hover { background: var(--blue); transform: translateY(-2px); }
 
-/* ════════════════════════════════════════════
-   FILTRES
-════════════════════════════════════════════ */
+/*FILTRES*/
 .filters-section {
   background: white;
   padding: 1.75rem 0;
@@ -181,9 +179,9 @@
 }
 .pill-count { font-size: 0.7rem; opacity: 0.65; font-weight: 700; }
 
-/* ════════════════════════════════════════════
+/*
    SECTION EVENTS
-════════════════════════════════════════════ */
+ */
 .events-section {
   background: var(--off-white);
   background-image:
@@ -193,18 +191,18 @@
   min-height: 60vh;
 }
 
-/* ════════════════════════════════════════════
+/*
    GRILLE EVENTS
-════════════════════════════════════════════ */
+ */
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: 1.75rem;
 }
 
-/* ════════════════════════════════════════════
+/*
    CARD EVENT
-════════════════════════════════════════════ */
+ */
 .event-card {
   background: #ffffff;
   border-radius: 22px;
@@ -333,10 +331,10 @@
 .price-free { font-size: 0.9rem; font-weight: 800; color: #059669; }
 .price-paid { font-size: 0.9rem; font-weight: 800; color: #0f1e3d; }
 
-/* ════════════════════════════════════════════
+/*
    BOUTON "VOIR LES DÉTAILS"
    ✅ FIX FINAL — valeurs hex absolues, pas de variables
-════════════════════════════════════════════ */
+ */
 a.event-btn,
 a.event-btn:link,
 a.event-btn:visited {
@@ -372,9 +370,9 @@ a.event-btn svg {
   fill: none;
 }
 
-/* ════════════════════════════════════════════
+/*
    AUCUN RÉSULTAT
-════════════════════════════════════════════ */
+ */
 .no-results {
   display: flex; justify-content: center; align-items: center; min-height: 400px;
 }
@@ -402,9 +400,9 @@ a.event-btn svg {
 }
 .reset-btn-large .icon { width: 18px; height: 18px; }
 
-/* ════════════════════════════════════════════
+/*
    RESPONSIVE
-════════════════════════════════════════════ */
+ */
 @media (max-width: 900px) {
   .header-body { flex-direction: column; gap: 2rem; }
   .header-right { width: 100%; }

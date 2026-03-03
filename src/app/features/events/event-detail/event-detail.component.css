@@ -1,6 +1,4 @@
-/* ════════════════════════════════════════════
-   EVENT DETAIL — Bleu marine + couleur
-════════════════════════════════════════════ */
+/*EVENT DETAIL*/
 :root {
   --navy:      #0f1e3d;
   --blue:      #1d4ed8;
@@ -20,9 +18,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 .detail-page { min-height: 100vh; background: var(--off-white); font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
-/* ════════════════════════════════════════════
-   404
-════════════════════════════════════════════ */
+/*404 */
 .not-found { display: flex; justify-content: center; align-items: center; min-height: 80vh; }
 .not-found-content { text-align: center; }
 .not-found-icon { font-size: 4.5rem; margin-bottom: 1rem; }
@@ -36,9 +32,7 @@
 }
 .back-link:hover { background: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,78,216,0.3); }
 
-/* ════════════════════════════════════════════
-   HERO
-════════════════════════════════════════════ */
+/*HERO*/
 .event-hero {
   position: relative; height: 500px;
   overflow: hidden; background: var(--navy);
@@ -119,9 +113,7 @@
   max-width: 800px;
 }
 
-/* ════════════════════════════════════════════
-   CORPS — layout 2 colonnes sur desktop
-════════════════════════════════════════════ */
+/*CORPS — layout 2 colonnes sur desktop */
 .page-body {
   max-width: 1200px; margin: 0 auto;
   padding: 2.5rem 2rem 6rem;
@@ -132,15 +124,11 @@
   align-items: start;
 }
 
-/* La card description prend toute la largeur */
 .card-description { grid-column: 1 / -1; }
 
-/* La section similaires prend toute la largeur */
 .similaires-section { grid-column: 1 / -1; }
 
-/* ════════════════════════════════════════════
-   CARDS GÉNÉRIQUES
-════════════════════════════════════════════ */
+/* CARDS GÉNÉRIQUES */
 .card {
   background: var(--white);
   border-radius: 22px; padding: 2rem;
@@ -156,9 +144,7 @@
 }
 .card-text { font-size: 0.9rem; color: var(--gray-600); line-height: 1.78; }
 
-/* ════════════════════════════════════════════
-   INFOS PRATIQUES
-════════════════════════════════════════════ */
+/* INFOS PRATIQUES */
 .infos-card {}
 .infos-grid {
   display: grid;
@@ -190,9 +176,7 @@
 .info-value { font-size: 0.9rem; font-weight: 600; color: var(--navy); line-height: 1.45; }
 .info-value.gratuit { color: var(--green); font-weight: 700; }
 
-/* ════════════════════════════════════════════
-   CARD RÉSERVATION GRATUITE
-════════════════════════════════════════════ */
+/*CARD RÉSERVATION GRATUITE*/
 .reservation-card {
   background: linear-gradient(135deg, var(--navy) 0%, #1a2f5a 100%);
   border: none;
@@ -223,9 +207,7 @@
 }
 .btn-reserver:hover { background: var(--blue); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,0.5); }
 
-/* ════════════════════════════════════════════
-   CARD RÉSERVATION PAYANTE
-════════════════════════════════════════════ */
+/*CARD RÉSERVATION PAYANTE*/
 .reservation-card--payante {
   background: var(--white) !important;
   border: 2px solid var(--blue-lt) !important;
@@ -315,9 +297,7 @@
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ════════════════════════════════════════════
-   ÉVÉNEMENTS SIMILAIRES
-════════════════════════════════════════════ */
+/*ÉVÉNEMENTS SIMILAIRES*/
 .similaires-section {
   background: var(--white);
   border-radius: 22px; padding: 2rem;
@@ -393,9 +373,7 @@
 }
 .sim-btn:hover { background: var(--blue); }
 
-/* ════════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════════ */
+/*RESPONSIVE*/
 @media (max-width: 1024px) {
   .page-body { grid-template-columns: 1fr; }
   .card-description { grid-column: 1; }

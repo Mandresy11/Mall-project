@@ -1,6 +1,6 @@
-/* ════════════════════════════════════════════
+/*
    SHOPS PAGE — Bleu marine + couleur
-════════════════════════════════════════════ */
+ */
 :root {
   --navy:       #0f1e3d;
   --navy-soft:  #162640;
@@ -24,9 +24,9 @@ html { scroll-behavior: smooth; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 .icon { flex-shrink: 0; }
 
-/* ════════════════════════════════════════════
+/*
    HEADER
-════════════════════════════════════════════ */
+ */
 .header-section {
   background: var(--navy);
   padding: 5rem 0 10rem;
@@ -129,9 +129,9 @@ html { scroll-behavior: smooth; }
 }
 .clear-btn:hover { background: rgba(255,255,255,0.35); color: white; }
 
-/* ════════════════════════════════════════════
+/*
    SECTION RANDOM — fond blanc
-════════════════════════════════════════════ */
+ */
 .random-section {
   background: #ffffff;
   padding: 1.5rem 0;
@@ -206,10 +206,9 @@ html { scroll-behavior: smooth; }
 .btn-retry:hover { background: var(--blue-mid); }
 .random-empty { color: var(--gray-400); font-size: 0.875rem; margin-top: 0.5rem; }
 
-/* ════════════════════════════════════════════
+/*
    FILTRES
-   ✅ background blanc SOLIDE + z-index haut
-════════════════════════════════════════════ */
+ */
 .filters-section {
   background: #ffffff;
   padding: 1.25rem 0 1rem;
@@ -241,7 +240,7 @@ html { scroll-behavior: smooth; }
 .reset-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
 .reset-btn .icon { width: 14px; height: 14px; }
 
-/* ✅ Pills fixes */
+/* Pills fixes */
 .category-pills {
   display: flex;
   flex-wrap: wrap;
@@ -301,9 +300,9 @@ html { scroll-behavior: smooth; }
   color: #ffffff !important;
 }
 
-/* ════════════════════════════════════════════
+/*
    RÉSULTATS
-════════════════════════════════════════════ */
+ */
 .results-section {
   background: var(--off-white);
   background-image:
@@ -322,18 +321,18 @@ html { scroll-behavior: smooth; }
 .results-count .icon { width: 16px; height: 16px; color: var(--blue-lt); }
 .count-number { color: var(--navy); font-weight: 800; font-size: 1rem; }
 
-/* ════════════════════════════════════════════
+/*
    GRILLE BOUTIQUES
-════════════════════════════════════════════ */
+ */
 .shops-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.75rem;
 }
 
-/* ════════════════════════════════════════════
+/*
    CARD BOUTIQUE
-════════════════════════════════════════════ */
+ */
 .shop-card {
   background: var(--white);
   border-radius: 22px; overflow: hidden;
@@ -424,9 +423,9 @@ html { scroll-behavior: smooth; }
 .separator { height: 1px; background: var(--gray-100); margin-bottom: 1rem; }
 .shop-footer { display: flex; justify-content: flex-end; }
 
-/* ════════════════════════════════════════════
+/*
    BOUTON "VOIR LES DÉTAILS"
-════════════════════════════════════════════ */
+ */
 a.shop-btn,
 a.shop-btn:link,
 a.shop-btn:visited {
@@ -446,9 +445,9 @@ a.shop-btn:active {
 }
 a.shop-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
 
-/* ════════════════════════════════════════════
+/*
    AUCUN RÉSULTAT
-════════════════════════════════════════════ */
+ */
 .no-results { text-align: center; padding: 5rem 2rem; }
 .no-results-content { display: flex; flex-direction: column; align-items: center; }
 .no-results-icon {
@@ -470,9 +469,9 @@ a.shop-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
   box-shadow: 0 8px 24px rgba(29,78,216,0.3);
 }
 
-/* ════════════════════════════════════════════
+/*
    RESPONSIVE
-════════════════════════════════════════════ */
+ */
 @media (max-width: 768px) {
   .header-section { padding: 4rem 0 8rem; }
   .page-title { font-size: 2.2rem; }

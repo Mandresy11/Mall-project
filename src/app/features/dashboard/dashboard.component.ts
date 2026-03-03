@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('❌ Erreur API:', err.status, err.message);
+        console.error('Erreur API:', err.status, err.message);
         this.hasError  = true;
         this.isLoading = false;
         this.cdr.detectChanges();
