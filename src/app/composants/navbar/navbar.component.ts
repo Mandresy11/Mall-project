@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../features/auth/auth.service';
 import { AuthModalComponent } from '../../features/auth/auth-modal/auth-modal.component';
 import { CartService } from '../../features/cart/cart.service';
@@ -22,7 +23,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   menuOuvert             = false;
   modalVisible           = false;
@@ -32,28 +33,44 @@ export class NavbarComponent implements OnInit {
   cartCount              = 0;
   drawerVisible          = false;
 
+  // ✅ Pour éviter les memory leaks
+  private destroy$ = new Subject<void>();
+
   constructor(
     private authService: AuthService,
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef  // ✅ FIX : injection du ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // Écouter connexion/déconnexion
-    this.authService.utilisateur$.subscribe(u => {
-      this.utilisateur = u;
-      if (u) {
-        // Charger le panier dès la connexion
-        this.cartService.chargerPanier().subscribe();
-      } else {
-        this.cartService.reinitialiser();
-      }
-    });
 
-    // Écouter le compteur en temps réel
-    this.cartService.count$.subscribe(count => {
-      this.cartCount = count;
-    });
+    // Écouter connexion/déconnexion
+    this.authService.utilisateur$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(u => {
+        this.utilisateur = u;
+        if (u) {
+          this.cartService.chargerPanier().subscribe();
+        } else {
+          this.cartService.reinitialiser();
+        }
+        this.cdr.markForCheck(); // ✅ forcer la mise à jour
+      });
+
+    // ✅ FIX PRINCIPAL : forcer la détection après chaque update du compteur
+    this.cartService.count$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => {
+        this.cartCount = count;
+        this.cdr.markForCheck(); // ✅ Angular re-render immédiatement le badge
+      });
+  }
+
+  // ✅ Nettoyage propre des subscriptions
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ouvrirConnexion(): void {
@@ -73,7 +90,6 @@ export class NavbarComponent implements OnInit {
   }
 
   onConnecte(): void {
-    // Charger le panier après connexion via modal
     this.cartService.chargerPanier().subscribe();
   }
 
