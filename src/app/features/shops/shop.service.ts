@@ -27,7 +27,7 @@ export class ShopService {
     );
   }
 
-  //  Récupérer une boutique par ID
+  // Récupérer une boutique par ID
   obtenirBoutiqueParId(id: string): Observable<Shop> {
     if (this.shopCache.has(id)) {
       return of(this.shopCache.get(id)!);
@@ -44,7 +44,7 @@ export class ShopService {
     return this.obtenirBoutiqueParId(id);
   }
 
-  //  Récupérer toutes les catégories
+  // Récupérer toutes les catégories
   chargerCategories(): Observable<Category[]> {
     return this.http.get<{ categories: Category[] }>(`${this.apiUrl}/category`).pipe(
       map(response => response.categories)
@@ -63,7 +63,7 @@ export class ShopService {
     return this.http.put<{ shop: Shop }>(`${this.apiUrl}/${id}`, formData).pipe(
       map(response => response.shop),
       tap(shop => {
-        if (shop?._id) this.shopCache.set(shop._id, shop); // Mettre à jour le cache
+        if (shop?._id) this.shopCache.set(shop._id, shop);
       })
     );
   }
@@ -72,14 +72,24 @@ export class ShopService {
   supprimerBoutique(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete/${id}`).pipe(
       tap(() => {
-        this.shopCache.delete(id); // Vider le cache pour cette boutique
+        this.shopCache.delete(id);
       })
     );
   }
 
-  // ─── Filtrer par catégorie (local) ────────────────────────────────────────
+  // Filtrer par catégorie (local)
   filtrerparCategorie(categorie: string, boutiques: Shop[]): Shop[] {
     if (categorie === 'tout') return boutiques;
     return boutiques.filter(b => b.category?.name === categorie);
+  }
+
+  // 🎲 NOUVEAU : Sélectionner un restaurant aléatoire (local, sans appel API)
+  selectionnerRestaurantAleatoire(boutiques: Shop[]): Shop | null {
+    const restaurants = boutiques.filter(b =>
+      b.category?.name?.toLowerCase().includes('restaur')
+    );
+    if (restaurants.length === 0) return null;
+    const index = Math.floor(Math.random() * restaurants.length);
+    return restaurants[index];
   }
 }

@@ -19,7 +19,6 @@
         Plus de <span class="highlight">{{ shops.length }} boutiques</span> vous attendent
       </p>
 
-      <!-- BOUTON AJOUTER — visible seulement pour l'admin -->
       <div class="admin-actions fade-in-up delay-350" *ngIf="estAdmin">
         <a routerLink="/boutiques/ajouter" class="btn-admin-add">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
@@ -41,8 +40,52 @@
             [(ngModel)]="recherche"
             (input)="quandOnCherche($event)"
           />
-          <button *ngIf="recherche" class="clear-btn" (click)="recherche = ''; appliquerLesFiltres()">✕</button>
+          <button *ngIf="recherche" class="clear-btn" (click)="recherche = ''; appliquerLesFiltres()">&#x2715;</button>
         </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 🎲 SECTION RESTAURANT ALÉATOIRE -->
+  <div class="random-section">
+    <div class="container">
+
+      <div class="random-wrapper">
+        <p class="random-intro">Vous ne savez pas où manger ?</p>
+        <button class="btn-random" (click)="choisirRestaurantAleatoire()" [disabled]="isSpinning">
+          <span class="dice-icon" [class.spinning]="isSpinning">&#x1F3B2;</span>
+          <span>{{ isSpinning ? 'Sélection en cours...' : 'Surprenez-moi un restaurant !' }}</span>
+        </button>
+      </div>
+
+      <div class="random-result" *ngIf="restaurantAleatoire && !isSpinning">
+        <button class="result-close" (click)="fermerResultat()" title="Fermer">&#x2715;</button>
+        <div class="result-label">&#x1F37D;&#xFE0F; Notre suggestion du moment</div>
+        <a [routerLink]="['/boutiques', restaurantAleatoire._id]" class="result-card">
+          <div class="result-img-wrapper">
+            <img
+              *ngIf="restaurantAleatoire.coverPhoto"
+              [src]="restaurantAleatoire.coverPhoto"
+              [alt]="restaurantAleatoire.name"
+              class="result-img"
+            />
+          </div>
+          <div class="result-body">
+            <h3 class="result-name">{{ restaurantAleatoire.name }}</h3>
+            <p class="result-desc">{{ restaurantAleatoire.description }}</p>
+            <span class="result-location">
+              &#x1F4CD; Niveau {{ restaurantAleatoire.location.level }} — Section {{ restaurantAleatoire.location.section }}
+            </span>
+          </div>
+        </a>
+        <button class="btn-retry" (click)="choisirRestaurantAleatoire()">
+          &#x1F504; Autre suggestion
+        </button>
+      </div>
+
+      <div class="random-empty" *ngIf="aucunRestaurant && !isSpinning">
+        <span>&#x1F615; Aucun restaurant disponible pour le moment.</span>
       </div>
 
     </div>
@@ -69,7 +112,7 @@
 
       <div class="category-pills">
         <button class="category-pill" [class.active]="categorieChoisie === 'tout'" (click)="filtrerParCategorie('tout')">
-          <span class="pill-icon">🏬</span>
+          <span class="pill-icon">&#x1F3EC;</span>
           <span class="pill-text">Toutes</span>
           <span class="pill-count">{{ shops.length }}</span>
         </button>
@@ -97,11 +140,8 @@
         </p>
       </div>
 
-      <!-- Grille boutiques -->
       <div class="shops-grid" *ngIf="boutiquesAffichees.length > 0">
-
-        <div class="shop-card" *ngFor="let boutique of boutiquesAffichees; let i = index"
-             [style.animation-delay]="(i * 0.1) + 's'">
+        <div class="shop-card" *ngFor="let boutique of boutiquesAffichees; let i = index" [style.animation-delay]="(i * 0.1) + 's'">
 
           <div class="shop-image-wrapper">
             <img
@@ -118,22 +158,12 @@
               <span class="badge-label">{{ boutique.category.name }}</span>
             </div>
 
-            <!-- 👇 BADGES ADMIN (Edit / Delete) — visibles seulement pour l'admin -->
             <div class="admin-card-actions" *ngIf="estAdmin">
-              <a
-                [routerLink]="['/boutiques', boutique._id, 'modifier']"
-                class="btn-card-edit"
-                title="Modifier"
-                (click)="$event.stopPropagation()"
-              >
-                ✏️
+              <a [routerLink]="['/boutiques', boutique._id, 'modifier']" class="btn-card-edit" title="Modifier" (click)="$event.stopPropagation()">
+                <span>&#x270F;&#xFE0F;</span>
               </a>
-              <button
-                class="btn-card-delete"
-                title="Supprimer"
-                (click)="supprimerBoutique(boutique._id!, $event)"
-              >
-                🗑️
+              <button class="btn-card-delete" title="Supprimer" (click)="supprimerBoutique(boutique._id!, $event)">
+                <span>&#x1F5D1;&#xFE0F;</span>
               </button>
             </div>
 
@@ -167,10 +197,8 @@
 
           </div>
         </div>
-
       </div>
 
-      <!-- Aucun résultat -->
       <div class="no-results" *ngIf="!isLoading && boutiquesAffichees.length === 0">
         <div class="no-results-content">
           <div class="no-results-icon">
@@ -187,14 +215,12 @@
     </div>
   </div>
 
-
-<!-- Modale de confirmation suppression -->
-<app-confirm-modal
-  [visible]="modalVisible"
-  titre="Supprimer la boutique"
-  message="Cette action est irréversible. La boutique et toutes ses données seront définitivement supprimées."
-  (confirme)="confirmerSuppression()"
-  (annule)="annulerSuppression()"
-></app-confirm-modal>
+  <app-confirm-modal
+    [visible]="modalVisible"
+    titre="Supprimer la boutique"
+    message="Cette action est irréversible. La boutique et toutes ses données seront définitivement supprimées."
+    (confirme)="confirmerSuppression()"
+    (annule)="annulerSuppression()"
+  ></app-confirm-modal>
 
 </div>

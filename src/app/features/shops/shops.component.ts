@@ -41,7 +41,11 @@ export class ShopsComponent implements OnInit {
   categorieChoisie: string = 'tout';
   recherche: string = '';
 
-  // Propriété calculée : est-ce que l'utilisateur connecté est admin ?
+  // 🎲 NOUVEAU : état restaurant aléatoire
+  restaurantAleatoire: Shop | null = null;
+  isSpinning = false;
+  aucunRestaurant = false;
+
   get estAdmin(): boolean {
     return this.authService.estAdmin();
   }
@@ -79,7 +83,30 @@ export class ShopsComponent implements OnInit {
     });
   }
 
-  //  Ouvrir la modale de confirmation
+  // 🎲 NOUVEAU : choisir un restaurant au hasard
+  choisirRestaurantAleatoire(): void {
+    this.isSpinning = true;
+    this.restaurantAleatoire = null;
+    this.aucunRestaurant = false;
+
+    setTimeout(() => {
+      const resultat = this.shopService.selectionnerRestaurantAleatoire(this.shops);
+      if (resultat) {
+        this.restaurantAleatoire = resultat;
+      } else {
+        this.aucunRestaurant = true;
+      }
+      this.isSpinning = false;
+      this.cdr.detectChanges();
+    }, 900);
+  }
+
+  // 🎲 NOUVEAU : fermer la carte résultat
+  fermerResultat(): void {
+    this.restaurantAleatoire = null;
+    this.aucunRestaurant = false;
+  }
+
   supprimerBoutique(shopId: string, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
@@ -87,7 +114,6 @@ export class ShopsComponent implements OnInit {
     this.modalVisible = true;
   }
 
-  //  Appelé quand l'admin clique "Supprimer" dans la modale
   confirmerSuppression(): void {
     if (!this.shopIdASupprimer) return;
     this.modalVisible = false;
@@ -108,7 +134,6 @@ export class ShopsComponent implements OnInit {
     });
   }
 
-  //  Appelé quand l'admin clique "Annuler" dans la modale
   annulerSuppression(): void {
     this.modalVisible = false;
     this.shopIdASupprimer = null;
