@@ -6,7 +6,7 @@
       <div class="badge-container fade-in-up delay-100">
         <div class="modern-badge">
           <span class="pulse-dot"></span>
-          <span class="badge-text">&#x1F6CD;&#xFE0F; Découvrez nos boutiques</span>
+          <span class="badge-text">🛍️ Découvrez nos boutiques</span>
         </div>
       </div>
 
@@ -40,30 +40,28 @@
             [(ngModel)]="recherche"
             (input)="quandOnCherche($event)"
           />
-          <button *ngIf="recherche" class="clear-btn" (click)="recherche = ''; appliquerLesFiltres()">&#x2715;</button>
+          <button *ngIf="recherche" class="clear-btn" (click)="recherche = ''; appliquerLesFiltres()">✕</button>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ============================================
-       🎲 SECTION RESTAURANT ALÉATOIRE
-       ============================================ -->
+  <!-- SECTION RESTAURANT ALÉATOIRE -->
   <div class="random-section">
     <div class="container">
 
       <div class="random-wrapper">
         <p class="random-intro">Vous ne savez pas où manger ?</p>
         <button class="btn-random" (click)="choisirRestaurantAleatoire()" [disabled]="isSpinning">
-          <span class="dice-icon" [class.spinning]="isSpinning">&#x1F3B2;</span>
+          <span class="dice-icon" [class.spinning]="isSpinning">🎲</span>
           <span>{{ isSpinning ? 'Sélection en cours...' : 'Surprenez-moi un restaurant !' }}</span>
         </button>
       </div>
 
       <div class="random-result" *ngIf="restaurantAleatoire && !isSpinning">
-        <button class="result-close" (click)="fermerResultat()" title="Fermer">&#x2715;</button>
-        <div class="result-label">&#x1F37D;&#xFE0F; Notre suggestion du moment</div>
+        <button class="result-close" (click)="fermerResultat()" title="Fermer">✕</button>
+        <div class="result-label">🍽️ Notre suggestion du moment</div>
         <a [routerLink]="['/boutiques', restaurantAleatoire._id]" class="result-card">
           <div class="result-img-wrapper">
             <img
@@ -77,17 +75,17 @@
             <h3 class="result-name">{{ restaurantAleatoire.name }}</h3>
             <p class="result-desc">{{ restaurantAleatoire.description }}</p>
             <span class="result-location">
-              &#x1F4CD; Niveau {{ restaurantAleatoire.location.level }} — Section {{ restaurantAleatoire.location.section }}
+              📍 Niveau {{ restaurantAleatoire.location.level }} — Section {{ restaurantAleatoire.location.section }}
             </span>
           </div>
         </a>
         <button class="btn-retry" (click)="choisirRestaurantAleatoire()">
-          &#x1F504; Autre suggestion
+          🔄 Autre suggestion
         </button>
       </div>
 
       <div class="random-empty" *ngIf="aucunRestaurant && !isSpinning">
-        <span>&#x1F615; Aucun restaurant disponible pour le moment.</span>
+        <span>😕 Aucun restaurant disponible pour le moment.</span>
       </div>
 
     </div>
@@ -100,24 +98,29 @@
       <div class="filters-header">
         <h3 class="filters-title">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
           </svg>
           Filtrer par catégorie
         </h3>
         <button *ngIf="categorieChoisie !== 'tout' || recherche !== ''" class="reset-btn" (click)="toutReinitialiser()">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
           Réinitialiser
         </button>
       </div>
 
       <div class="category-pills">
+
+        <!-- ✅ Pill "Toutes" avec emoji direct -->
         <button class="category-pill" [class.active]="categorieChoisie === 'tout'" (click)="filtrerParCategorie('tout')">
-          <span class="pill-icon">&#x1F3EC;</span>
+          <span class="pill-icon">🏬</span>
           <span class="pill-text">Toutes</span>
           <span class="pill-count">{{ shops.length }}</span>
         </button>
+
         <button *ngFor="let cat of categories" class="category-pill"
           [class.active]="categorieChoisie === cat._id"
           (click)="filtrerParCategorie(cat._id)">
@@ -125,6 +128,7 @@
           <span class="pill-text">{{ cat.name }}</span>
           <span class="pill-count">{{ combienDansCetteCategorie(cat._id) }}</span>
         </button>
+
       </div>
 
     </div>
@@ -137,7 +141,8 @@
       <div class="results-header">
         <p class="results-count">
           <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
           </svg>
           <span class="count-number">{{ boutiquesAffichees.length }}</span>
           boutique{{ boutiquesAffichees.length > 1 ? 's' : '' }} trouvée{{ boutiquesAffichees.length > 1 ? 's' : '' }}
@@ -166,11 +171,13 @@
             </div>
 
             <div class="admin-card-actions" *ngIf="estAdmin">
-              <a [routerLink]="['/boutiques', boutique._id, 'modifier']" class="btn-card-edit" title="Modifier" (click)="$event.stopPropagation()">
-                <span>&#x270F;&#xFE0F;</span>
+              <a [routerLink]="['/boutiques', boutique._id, 'modifier']" class="btn-card-edit"
+                title="Modifier" (click)="$event.stopPropagation()">
+                ✏️
               </a>
-              <button class="btn-card-delete" title="Supprimer" (click)="supprimerBoutique(boutique._id!, $event)">
-                <span>&#x1F5D1;&#xFE0F;</span>
+              <button class="btn-card-delete" title="Supprimer"
+                (click)="supprimerBoutique(boutique._id!, $event)">
+                🗑️
               </button>
             </div>
 
@@ -184,13 +191,14 @@
 
             <div class="shop-location">
               <svg class="location-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
               <span>Niveau {{ boutique.location.level }}, Section {{ boutique.location.section }}</span>
             </div>
 
-            <!--     BADGE STATUT OUVERT/FERMÉ -->
             <div class="shop-status-wrapper">
               <app-shop-status-badge
                 [openingHours]="boutique.openingHours"
@@ -220,7 +228,8 @@
         <div class="no-results-content">
           <div class="no-results-icon">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
           <h3 class="no-results-title">Aucune boutique trouvée</h3>

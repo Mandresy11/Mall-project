@@ -1,153 +1,139 @@
-
-
 <div class="home-page">
 
+  <!-- HERO — fond bleu marine foncé -->
+  <section class="hero">
+    <div class="hero-inner">
 
-  <section class="hero-section">
-
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-
-    <div class="hero-content">
-
-      <div class="badge">
-        <span class="pulse-dot"></span>
-        <span>✨ Nouvellement rénové</span>
+      <!-- Gauche : texte -->
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          Nouvellement rénové · Antananarivo
+        </div>
+        <h1 class="hero-title">
+          Le meilleur shopping
+          <span class="hero-accent">au même endroit.</span>
+        </h1>
+        <p class="hero-sub">
+          MegaMall réunit 150+ boutiques, restaurants<br class="br-desktop">
+          et expériences dans un espace pensé pour vous.
+        </p>
+        <div class="hero-actions">
+          <a routerLink="/boutiques" class="btn-primary">Explorer les boutiques →</a>
+          <a routerLink="/evenements" class="btn-secondary">📅 Événements</a>
+        </div>
       </div>
 
-      <h1 class="hero-title">
-        Bienvenue au
-        <span class="gradient-text">MegaMall</span>
-      </h1>
-
-      <p class="hero-subtitle">
-        Votre destination shopping premium à Antananarivo
-      </p>
-
-      <p class="hero-stats">
-        Plus de <strong>150 boutiques</strong> ·
-        <strong>25 restaurants</strong> ·
-        <strong>5000 places</strong> de parking
-      </p>
-
-      <div class="hero-buttons">
-        <a routerLink="/boutiques" class="btn-primary">
-          <span>Explorer les boutiques</span>
-          <span>→</span>
-        </a>
-
-        <a routerLink="/evenements" class="btn-secondary">
-          <span>📅</span>
-          <span>Événements</span>
-        </a>
+      <!-- Droite : 4 cards avec contenu visible -->
+      <div class="hero-right">
+        <div class="hero-card">
+          <div class="hc-icon">🏬</div>
+          <div class="hc-num">150+</div>
+          <div class="hc-label">Boutiques</div>
+        </div>
+        <div class="hero-card">
+          <div class="hc-icon">🍽️</div>
+          <div class="hc-num">25+</div>
+          <div class="hc-label">Restaurants</div>
+        </div>
+        <div class="hero-card">
+          <div class="hc-icon">🚗</div>
+          <div class="hc-num">5 000</div>
+          <div class="hc-label">Places parking</div>
+        </div>
+        <div class="hero-card">
+          <div class="hc-icon">👥</div>
+          <div class="hc-num">50k+</div>
+          <div class="hc-label">Visiteurs/mois</div>
+        </div>
       </div>
 
     </div>
-
-    <div class="wave-bottom">
-      <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
-              fill="white"/>
-      </svg>
-    </div>
-
   </section>
 
-
-  <section class="stats-section">
+  <!-- STATS BAND — fond bleu vif -->
+  <section class="stats-band">
     <div class="container">
       <div class="stats-grid">
-
-        <div class="stat-card">
-          <div class="stat-icon purple">🏬</div>
-          <div class="stat-number">150+</div>
-          <div class="stat-label">Boutiques</div>
+        <div class="stat-item">
+          <div class="stat-num">150+</div>
+          <div class="stat-lbl">Boutiques</div>
         </div>
-
-        <div class="stat-card">
-          <div class="stat-icon pink">🍽️</div>
-          <div class="stat-number">25+</div>
-          <div class="stat-label">Restaurants</div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-num">25+</div>
+          <div class="stat-lbl">Restaurants</div>
         </div>
-
-        <div class="stat-card">
-          <div class="stat-icon blue">🚗</div>
-          <div class="stat-number">5000+</div>
-          <div class="stat-label">Places parking</div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-num">5 000</div>
+          <div class="stat-lbl">Places parking</div>
         </div>
-
-        <div class="stat-card">
-          <div class="stat-icon green">👥</div>
-          <div class="stat-number">50k+</div>
-          <div class="stat-label">Visiteurs/mois</div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-num">50k+</div>
+          <div class="stat-lbl">Visiteurs / mois</div>
         </div>
-
       </div>
     </div>
   </section>
 
-
-  <section class="services-section">
+  <!-- SERVICES — fond off-white -->
+  <section class="services">
     <div class="container">
-
-      <div class="section-header">
-        <h2 class="section-title">Nos Services</h2>
-        <p class="section-subtitle">Tout pour rendre votre visite agréable</p>
+      <div class="section-head">
+        <span class="section-tag">Nos services</span>
+        <h2 class="section-title">
+          Tout ce dont vous avez besoin,<br>
+          sous un même toit.
+        </h2>
       </div>
-
       <div class="services-grid">
-
         <div class="service-card">
           <div class="service-icon">🅿️</div>
-          <h3>Parking Sécurisé</h3>
-          <p>5000 places disponibles avec surveillance 24h/24</p>
+          <h3>Parking sécurisé</h3>
+          <p>5 000 places disponibles avec surveillance 24h/24</p>
         </div>
-
         <div class="service-card">
           <div class="service-icon">📶</div>
-          <h3>WiFi Gratuit</h3>
-          <p>Connexion haut débit dans tout le centre</p>
+          <h3>Wi-Fi gratuit</h3>
+          <p>Connexion haut débit dans tout le centre commercial</p>
         </div>
-
         <div class="service-card">
           <div class="service-icon">👶</div>
-          <h3>Espace Enfants</h3>
+          <h3>Espace enfants</h3>
           <p>Aire de jeux surveillée pour les plus petits</p>
         </div>
-
         <div class="service-card">
           <div class="service-icon">🍽️</div>
           <h3>Food Court</h3>
-          <p>25 restaurants et fast-foods au choix</p>
+          <p>25 restaurants et fast-foods pour tous les goûts</p>
         </div>
-
         <div class="service-card">
           <div class="service-icon">🎬</div>
           <h3>Cinéma</h3>
-          <p>Complexe de 8 salles dernière génération</p>
+          <p>Complexe de 8 salles de cinéma dernière génération</p>
         </div>
-
         <div class="service-card">
           <div class="service-icon">♿</div>
           <h3>Accessibilité</h3>
-          <p>Accès PMR sur tous les niveaux</p>
+          <p>Accès PMR disponible sur tous les niveaux</p>
         </div>
-
       </div>
     </div>
   </section>
 
-
-  <section class="cta-section">
-    <div class="cta-content">
-      <h2>Prêt à découvrir le MegaMall ?</h2>
-      <p>Venez visiter notre centre commercial et profitez d'une expérience shopping unique</p>
-      <a routerLink="/boutiques" class="btn-cta">
-        <span>Découvrir toutes les boutiques</span>
-        <span>→</span>
-      </a>
+  <!-- CTA — fond bleu marine -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-inner">
+        <div class="cta-left">
+          <span class="cta-tag">Prêt à explorer ?</span>
+          <h2 class="cta-title">Découvrez toutes<br>nos boutiques.</h2>
+          <p class="cta-sub">Des centaines de marques vous attendent dans un cadre unique.</p>
+        </div>
+        <a routerLink="/boutiques" class="btn-cta">Voir toutes les boutiques →</a>
+      </div>
     </div>
   </section>
 
