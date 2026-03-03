@@ -68,7 +68,7 @@ export class ShopDetailComponent implements OnInit {
     private cartService:        CartService //
   ) {}
 
-  // ─── Getters ─────────────────────────────────────────────────────────────
+  // ─── Getters
 
   get estAdmin(): boolean {
     return this.authService.estAdmin();
@@ -78,7 +78,7 @@ export class ShopDetailComponent implements OnInit {
     return this.authService.estConnecte() && !this.authService.estAdmin();
   }
 
-  // ─── Cycle de vie ────────────────────────────────────────────────────────
+  // ─── Cycle de vie
 
   ngOnInit(): void {
     const shopId = this.route.snapshot.paramMap.get('id');
@@ -125,7 +125,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // ─── Produits ────────────────────────────────────────────────────────────
+  // ─── Produits
 
   chargerProduits(shopId: string): void {
     this.shopDetailsService.getProductsByShop(shopId).subscribe({
@@ -258,7 +258,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // ───     Panier ────────────────────────────────────────────────────────────
+  //  Panier
 
   ajouterAuPanier(productId: string): void {
     if (!this.authService.estConnecte()) {
@@ -289,7 +289,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // ─── Avis ────────────────────────────────────────────────────────────────
+  //  Avis
 
   getStars(rating: number): number[] {
     return Array(5).fill(0).map((_, i) => i + 1);
@@ -346,7 +346,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // ─── Boutique ────────────────────────────────────────────────────────────
+  // ─── Boutique
 
   supprimerBoutique(): void {
     if (!this.shop?._id) return;
@@ -361,7 +361,7 @@ export class ShopDetailComponent implements OnInit {
     });
   }
 
-  // ─── Helpers ─────────────────────────────────────────────────────────────
+  // ─── Helpers
 
   avoirIconeCategorie(icon: string): string {
     return icon || '&#x1F3EA;';

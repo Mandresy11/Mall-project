@@ -1,6 +1,6 @@
-/* ════════════════════════════════════════════
-   SHOP DETAIL — Bleu marine + couleur
-════════════════════════════════════════════ */
+/*
+   SHOP DETAIL
+ */
 :root {
   --navy:      #0f1e3d;
   --blue:      #1d4ed8;
@@ -21,9 +21,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 .detail-page { min-height: 100vh; background: var(--off-white); font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
-/* ════════════════════════════════════════════
+/*
    LOADING / NOT FOUND
-════════════════════════════════════════════ */
+ */
 .loading-spinner {
   display: flex; align-items: center; justify-content: center;
   height: 70vh; color: var(--gray-400);
@@ -42,9 +42,9 @@
 }
 .back-link:hover { background: var(--blue); transform: translateY(-2px); }
 
-/* ════════════════════════════════════════════
+/*
    HERO
-════════════════════════════════════════════ */
+ */
 .shop-hero {
   position: relative; height: 460px;
   overflow: hidden; background: var(--navy);
@@ -105,18 +105,16 @@
 }
 .hero-location { font-size: 0.875rem; color: rgba(255,255,255,0.6); }
 
-/* ════════════════════════════════════════════
-   CORPS
-════════════════════════════════════════════ */
+/*CORPS*/
 .page-body {
   max-width: 1200px; margin: 0 auto;
   padding: 2.5rem 2rem 6rem;
   display: flex; flex-direction: column; gap: 1.5rem;
 }
 
-/* ════════════════════════════════════════════
+/*
    CARDS
-════════════════════════════════════════════ */
+ */
 .card {
   background: var(--white); border-radius: 22px; padding: 2rem;
   border: 1.5px solid var(--gray-200); transition: box-shadow var(--t);
@@ -152,9 +150,9 @@
 .opening-day  { color: var(--gray-600); font-weight: 500; }
 .opening-time { color: var(--navy); font-weight: 700; }
 
-/* ════════════════════════════════════════════
+/*
    SECTION PRODUITS
-════════════════════════════════════════════ */
+ */
 .products-section {
   background: var(--white); border-radius: 22px; padding: 2rem;
   border: 1.5px solid var(--gray-200); display: flex; flex-direction: column; gap: 1.75rem;
@@ -180,9 +178,9 @@
 .btn-add-product:hover { background: var(--blue); color: white; transform: translateY(-1px); }
 .no-products { text-align: center; padding: 3rem; color: var(--gray-400); font-size: 0.9rem; }
 
-/* ════════════════════════════════════════════
+/*
    GRILLE PRODUITS
-════════════════════════════════════════════ */
+ */
 .products-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem;
 }
@@ -244,9 +242,9 @@
   background: #d1fae5; padding: 0.25rem 0.65rem; border-radius: 50px;
 }
 
-/* ════════════════════════════════════════════
+/*
    BOUTON AJOUTER AU PANIER
-════════════════════════════════════════════ */
+ */
 .btn-add-cart {
   width: 100%;
   display: flex;
@@ -300,9 +298,9 @@
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ════════════════════════════════════════════
-   SECTION AVIS — VERSION AMÉLIORÉE ✨
-════════════════════════════════════════════ */
+/*
+   SECTION AVIS — VERSION AMÉLIORÉE
+ */
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -377,9 +375,9 @@
   display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-/* ════════════════════════════════════════════
+/*
    MODALS
-════════════════════════════════════════════ */
+ */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 1000;
     background: white;
@@ -442,9 +440,9 @@
 }
 .btn-cancel:hover { background: var(--gray-200); }
 
-/* ════════════════════════════════════════════
+/*
    RESPONSIVE
-════════════════════════════════════════════ */
+ */
 @media (max-width: 768px) {
   .shop-hero    { height: 360px; }
   .hero-logo    { width: 68px; height: 68px; }

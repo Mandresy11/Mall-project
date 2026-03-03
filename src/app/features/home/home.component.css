@@ -196,7 +196,7 @@
 
 .hc-icon  { font-size: 1.75rem; line-height: 1; }
 .hc-num   { font-size: 1.5rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; line-height: 1; }
-.hc-label { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.45); }
+.hc-label { font-size: 0.75rem; font-weight: 600; color: black; }
 
 /* ══ STATS BAND (fond bleu vif) ══ */
 .stats-band {
@@ -227,7 +227,7 @@
 
 .stat-lbl {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.65);
+  color: black;
   font-weight: 600;
   margin-top: 0.3rem;
   text-transform: uppercase;

@@ -86,7 +86,7 @@
 
         <div class="event-card" *ngFor="let event of evenementsAffiches">
 
-          <!-- ✅ IMAGE WRAPPER — se ferme AVANT event-content -->
+          <!-- IMAGE WRAPPER — se ferme AVANT event-content -->
           <div class="event-img-wrapper">
             <img [src]="event.image" [alt]="event.title" class="event-image" loading="lazy" />
             <div class="event-overlay"></div>
@@ -124,7 +124,7 @@
           </div>
           <!-- /.event-img-wrapper -->
 
-          <!-- ✅ CONTENU — EN DEHORS du wrapper image -->
+          <!-- CONTENU — EN DEHORS du wrapper image -->
           <div class="event-content">
             <div class="event-category">{{ event.category.name }}</div>
             <h3 class="event-title">{{ event.title }}</h3>
