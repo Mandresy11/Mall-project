@@ -76,8 +76,8 @@ html { scroll-behavior: smooth; }
   margin-bottom: 0.75rem; position: relative; z-index: 1;
 }
 .gradient-text { color: var(--blue-lt); }
-.page-subtitle { font-size: 1.05rem; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
-.highlight { color: var(--white); font-weight: 700; }
+.page-subtitle { font-size: 1.05rem; color:black; position: relative; z-index: 1; }
+.highlight { color:rgb(110, 100, 198); font-weight: 700; }
 
 .fade-in-up { animation: fadeUp 0.6s ease-out both; }
 .delay-100  { animation-delay: 0.1s; opacity: 0; }
@@ -103,8 +103,8 @@ html { scroll-behavior: smooth; }
 .search-container { margin-top: 2rem; position: relative; z-index: 1; }
 .search-box {
   display: flex; align-items: center; gap: 0.75rem;
-  background: rgba(255,255,255,0.1);
-  border: 1.5px solid rgba(255,255,255,0.18);
+  background:var(--blue);
+  border: 1.5px solid black;
   border-radius: 50px; padding: 0.8rem 1.5rem;
   max-width: 500px; backdrop-filter: blur(12px); transition: var(--t);
 }
@@ -113,17 +113,17 @@ html { scroll-behavior: smooth; }
   border-color: rgba(59,130,246,0.55);
   box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
 }
-.search-icon { width: 18px; height: 18px; color: rgba(255,255,255,0.45); flex-shrink: 0; }
+.search-icon { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
 .search-input {
   flex: 1; border: none; outline: none;
   background: transparent; font-size: 0.9rem;
-  color: white; font-family: inherit;
+  color:black; font-family: inherit;
 }
-.search-input::placeholder { color: rgba(255,255,255,0.38); }
+.search-input::placeholder { color: var(--green); }
 .clear-btn {
   width: 26px; height: 26px; border-radius: 50%;
   background: rgba(255,255,255,0.2); border: none;
-  color: rgba(255,255,255,0.7); cursor: pointer;
+  color: var(--navy); cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   font-size: 0.75rem; transition: var(--t); flex-shrink: 0;
 }
@@ -237,7 +237,7 @@ html { scroll-behavior: smooth; }
   font-size: 0.8rem; font-weight: 700;
   cursor: pointer; transition: var(--t); font-family: inherit;
 }
-.reset-btn:hover { background: var(--blue); color: white; border-color: var(--blue); }
+.reset-btn:hover { background: var(--blue); color: gold; border-color: var(--blue); }
 .reset-btn .icon { width: 14px; height: 14px; }
 
 /* Pills fixes */

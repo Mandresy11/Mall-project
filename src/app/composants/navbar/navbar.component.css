@@ -18,7 +18,7 @@
   align-items: center;
 }
 
-/* ── Logo ── */
+/* Logo*/
 .logo {
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* ── Menu principal ── */
+/*  Menu principal */
 .nav-menu {
   display: flex;
   list-style: none;
@@ -71,14 +71,14 @@
 .nav-link:hover::after,
 .nav-link.active::after { width: 100%; }
 
-/* ── Actions navbar ── */
+/* Actions navbar */
 .nav-actions {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-/* ── Bouton panier ── */
+/* Bouton panier*/
 .nav-cart-btn {
   position: relative;
   display: flex;
@@ -134,7 +134,7 @@
   to   { transform: scale(1); }
 }
 
-/* ── Boutons connexion / inscription ── */
+/*  Boutons connexion / inscription  */
 .btn-connexion {
   padding: 0.6rem 1.5rem;
   background: transparent;
@@ -171,7 +171,7 @@
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
-/* ── Avatar utilisateur ── */
+/*  Avatar utilisateur  */
 .user-menu { position: relative; }
 
 .btn-avatar {
@@ -229,7 +229,7 @@
   color: #667eea;
 }
 
-/* ── Dropdown ── */
+/*  Dropdown  */
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 12px);
@@ -351,7 +351,7 @@
 .dropdown-item.item-rouge:hover { background: #fef2f2; color: #dc2626; }
 .dropdown-item.item-rouge:hover svg { color: #dc2626; }
 
-/* ── Burger mobile ── */
+/*  Burger mobile  */
 .menu-burger {
   display: none;
   flex-direction: column;
@@ -371,7 +371,7 @@
 .menu-burger.ouvert span:nth-child(2) { opacity: 0; }
 .menu-burger.ouvert span:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
 
-/* ── Menu mobile ── */
+/*  Menu mobile  */
 .mobile-menu {
   display: none;
   flex-direction: column;
@@ -457,7 +457,7 @@
 
 .mobile-nom { font-weight: 700; color: #1f2937; font-size: 0.9rem; }
 
-/* ── Responsive ── */
+/*  Responsive  */
 @media (max-width: 768px) {
   .nav-menu    { display: none; }
   .nav-actions { display: none; }
@@ -465,7 +465,7 @@
   .mobile-menu { display: flex; }
   .nav-container { padding: 1rem 1.5rem; }
 }
-/* ── Bouton panier ── */
+/*  Bouton panier  */
 .nav-cart-btn {
   position: relative;
   display: flex;
